@@ -307,7 +307,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
 }
 
 export async function setupViteRepo(options: Partial<RepoOptions>) {
-  const repo = options.repo || "vitejs/vite";
+  const repo = options.repo || "swc-project/swc";
   await setupRepo({
     repo,
     dir: swcPath,
@@ -321,7 +321,7 @@ export async function setupViteRepo(options: Partial<RepoOptions>) {
     const rootPackageJson = JSON.parse(
       await fs.promises.readFile(rootPackageJsonFile, "utf-8"),
     );
-    const viteMonoRepoNames = ["@vitejs/vite-monorepo", "vite-monorepo"];
+    const viteMonoRepoNames = ["@swc-project/swc-monorepo", "vite-monorepo"];
     const { name } = rootPackageJson;
     if (!viteMonoRepoNames.includes(name)) {
       throw new Error(

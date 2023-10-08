@@ -22,7 +22,7 @@ on:
         description: "vite repository to use"
         required: true
         type: string
-        default: "vitejs/vite"
+        default: "swc-project/swc"
       suite:
         description: "testsuite to run. runs all testsuits when `-`."
         required: false
@@ -41,7 +41,7 @@ on:
           - previewjs
           - qwik
           - rakkas
-          #          - storybook  # disabled until test is updated, see https://github.com/vitejs/vite-ecosystem-ci/issues/130
+          #          - storybook  # disabled until test is updated, see https://github.com/swc-project/swc-ecosystem-ci/issues/130
           - sveltekit
           - unocss
           - vike
@@ -126,7 +126,7 @@ jobs:
           - previewjs
           - qwik
           - rakkas
-          #          - storybook  # disabled until test is updated, see https://github.com/vitejs/vite-ecosystem-ci/issues/130
+          #          - storybook  # disabled until test is updated, see https://github.com/swc-project/swc-ecosystem-ci/issues/130
           - sveltekit
           - unocss
           - vike

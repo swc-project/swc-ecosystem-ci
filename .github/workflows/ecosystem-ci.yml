@@ -30,7 +30,7 @@ on:
         description: "vite repository to use"
         required: true
         type: string
-        default: "vitejs/vite"
+        default: "swc-project/swc"
   repository_dispatch:
     types: [ecosystem-ci]
 jobs:
@@ -52,7 +52,7 @@ jobs:
           - previewjs
           - qwik
           - rakkas
-          #          - storybook  # disabled until test is updated, see https://github.com/vitejs/vite-ecosystem-ci/issues/130
+          #          - storybook  # disabled until test is updated, see https://github.com/swc-project/swc-ecosystem-ci/issues/130
           - sveltekit
           - unocss
           - vike
@@ -83,7 +83,7 @@ jobs:
       - run: >-
           pnpm tsx ecosystem-ci.ts
           --${{ inputs.refType || github.event.client_payload.refType || 'branch' }} ${{ inputs.ref || github.event.client_payload.ref || 'main' }}
-          --repo ${{ inputs.repo || github.event.client_payload.repo || 'vitejs/vite' }}
+          --repo ${{ inputs.repo || github.event.client_payload.repo || 'swc-project/swc' }}
           ${{ matrix.suite }}
         id: ecosystem-ci-run
       - if: always()
@@ -92,7 +92,7 @@ jobs:
           WORKFLOW_NAME: ci
           REF_TYPE: ${{ inputs.refType || github.event.client_payload.refType || 'branch' }}
           REF: ${{ inputs.ref || github.event.client_payload.ref || 'main' }}
-          REPO: ${{ inputs.repo || github.event.client_payload.repo || 'vitejs/vite' }}
+          REPO: ${{ inputs.repo || github.event.client_payload.repo || 'swc-project/swc' }}
           SUITE: ${{ matrix.suite }}
           STATUS: ${{ job.status }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
