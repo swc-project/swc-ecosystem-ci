@@ -9,13 +9,16 @@
   "scripts": {
     "prepare": "husky install"
   },
-  "dependencies": {
+  "devDependencies": {
+    "eslint": "^8.51.0",
     "husky": "^8.0.3",
-    "lint-staged": "^14.0.1"
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.3"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "pnpm run format"
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
     ]
   }
 }
