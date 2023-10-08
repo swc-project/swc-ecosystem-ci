@@ -265,25 +265,25 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
       overrides.vite = options.release;
     }
   } else {
-    overrides.vite ||= `${options.vitePath}/packages/vite`;
+    overrides.vite ||= `${options.swcPath}/packages/vite`;
 
     overrides[
       `@vitejs/plugin-legacy`
-    ] ||= `${options.vitePath}/packages/plugin-legacy`;
+    ] ||= `${options.swcPath}/packages/plugin-legacy`;
     if (options.viteMajor < 4) {
       overrides[
         `@vitejs/plugin-vue`
-      ] ||= `${options.vitePath}/packages/plugin-vue`;
+      ] ||= `${options.swcPath}/packages/plugin-vue`;
       overrides[
         `@vitejs/plugin-vue-jsx`
-      ] ||= `${options.vitePath}/packages/plugin-vue-jsx`;
+      ] ||= `${options.swcPath}/packages/plugin-vue-jsx`;
       overrides[
         `@vitejs/plugin-react`
-      ] ||= `${options.vitePath}/packages/plugin-react`;
+      ] ||= `${options.swcPath}/packages/plugin-react`;
       // vite-3 dependency setup could have caused problems if we don't synchronize node versions
       // vite-4 uses an optional peerDependency instead so keep project types
       const typesNodePath = fs.realpathSync(
-        `${options.vitePath}/node_modules/@types/node`,
+        `${options.swcPath}/node_modules/@types/node`,
       );
       overrides[`@types/node`] ||= `${typesNodePath}`;
     } else {
@@ -549,9 +549,9 @@ export function dirnameFrom(url: string) {
   return path.dirname(fileURLToPath(url));
 }
 
-export function parseViteMajor(vitePath: string): number {
+export function parseViteMajor(swcPath: string): number {
   const content = fs.readFileSync(
-    path.join(vitePath, "packages", "vite", "package.json"),
+    path.join(swcPath, "packages", "vite", "package.json"),
     "utf-8",
   );
   const pkg = JSON.parse(content);
@@ -594,7 +594,7 @@ async function buildOverrides(
     const { dir } = await buildDef.build({
       root: options.root,
       workspace: options.workspace,
-      vitePath: options.vitePath,
+      swcPath: options.swcPath,
       viteMajor: options.viteMajor,
       skipGit: options.skipGit,
       release: options.release,
