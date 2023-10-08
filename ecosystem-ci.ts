@@ -25,20 +25,20 @@ cli
   .option("--commit <commit>", "vite commit sha to use")
   .option("--release <version>", "vite release to use from npm registry")
   .action(async (suites, options: CommandOptions) => {
-    const { root, vitePath, workspace } = await setupEnvironment();
+    const { root, swcPath, workspace } = await setupEnvironment();
     const suitesToRun = getSuitesToRun(suites, root);
-    let viteMajor;
+    let swcMajor;
     if (!options.release) {
       await setupSwcRepo(options);
       await buildSwc({ verify: options.verify });
-      viteMajor = parseSwcMajor(vitePath);
+      swcMajor = parseSwcMajor(swcPath);
     } else {
-      viteMajor = parseMajorVersion(options.release);
+      swcMajor = parseMajorVersion(options.release);
     }
     const runOptions: RunOptions = {
       root,
-      vitePath,
-      viteMajor,
+      swcPath,
+      swcMajor,
       workspace,
       release: options.release,
       verify: options.verify,
@@ -78,13 +78,13 @@ cli
   })
   .option("--release <version>", "vite release to use from npm registry")
   .action(async (suites, options: CommandOptions) => {
-    const { root, vitePath, workspace } = await setupEnvironment();
+    const { root, swcPath, workspace } = await setupEnvironment();
     const suitesToRun = getSuitesToRun(suites, root);
     const runOptions: RunOptions = {
       ...options,
       root,
-      vitePath,
-      viteMajor: parseSwcMajor(vitePath),
+      swcPath,
+      swcMajor: parseSwcMajor(swcPath),
       workspace,
     };
     for (const suite of suitesToRun) {
@@ -112,7 +112,7 @@ cli
       );
       process.exit(1);
     }
-    const { root, vitePath, workspace } = await setupEnvironment();
+    const { root, swcPath, workspace } = await setupEnvironment();
     const suitesToRun = getSuitesToRun(suites, root);
     let isFirstRun = true;
     const { verify } = options;
@@ -124,8 +124,8 @@ cli
             verify: !!(isFirstRun && verify),
             skipGit: !isFirstRun,
             root,
-            vitePath,
-            viteMajor: parseSwcMajor(vitePath),
+            swcPath,
+            swcMajor: parseSwcMajor(swcPath),
             workspace,
           });
         }
