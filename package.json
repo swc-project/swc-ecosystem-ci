@@ -1,11 +1,24 @@
 {
   "name": "swc-ecosystem-ci",
   "packageManager": "pnpm@8.7.5",
+  "type": "module",
+  "engines": {
+    "node": ">=18",
+    "pnpm": "^8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swc-project/swc-ecosystem-ci.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/swc-project/swc-ecosystem-ci/issues"
+  },
+  "homepage": "https://github.com/swc-project/swc-ecosystem-ci#readme",
   "private": true,
   "version": "0.1.0",
   "keywords": [],
   "author": "",
-  "license": "MIT",
   "scripts": {
     "prepare": "husky install"
   },
@@ -13,12 +26,16 @@
     "eslint": "^8.51.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
+    ],
+    "*": [
+      "prettier --write --ignore-unknown"
     ]
   }
 }
