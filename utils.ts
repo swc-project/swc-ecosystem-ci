@@ -306,7 +306,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
   return { dir };
 }
 
-export async function setupViteRepo(options: Partial<RepoOptions>) {
+export async function setupSwcRepo(options: Partial<RepoOptions>) {
   const repo = options.repo || "vitejs/vite";
   await setupRepo({
     repo,
@@ -340,7 +340,7 @@ export async function buildSwc({ verify = false }) {
   }
 }
 
-export async function bisectVite(
+export async function bisectSwc(
   good: string,
   runSuite: () => Promise<Error | void>,
 ) {
@@ -520,7 +520,7 @@ export function dirnameFrom(url: string) {
   return path.dirname(fileURLToPath(url));
 }
 
-export function parseViteMajor(vitePath: string): number {
+export function parseSwcMajor(vitePath: string): number {
   const content = fs.readFileSync(
     path.join(vitePath, "packages", "vite", "package.json"),
     "utf-8",

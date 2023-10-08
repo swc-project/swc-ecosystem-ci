@@ -5,10 +5,10 @@ import { cac } from "cac";
 
 import {
   setupEnvironment,
-  setupViteRepo,
+  setupSwcRepo,
   buildSwc,
-  bisectVite,
-  parseViteMajor,
+  bisectSwc,
+  parseSwcMajor,
   parseMajorVersion,
 } from "./utils";
 import { CommandOptions, RunOptions } from "./types";
@@ -29,9 +29,9 @@ cli
     const suitesToRun = getSuitesToRun(suites, root);
     let viteMajor;
     if (!options.release) {
-      await setupViteRepo(options);
+      await setupSwcRepo(options);
       await buildSwc({ verify: options.verify });
-      viteMajor = parseViteMajor(vitePath);
+      viteMajor = parseSwcMajor(vitePath);
     } else {
       viteMajor = parseMajorVersion(options.release);
     }
@@ -62,7 +62,7 @@ cli
   .option("--commit <commit>", "vite commit sha to use")
   .action(async (options: CommandOptions) => {
     await setupEnvironment();
-    await setupViteRepo(options);
+    await setupSwcRepo(options);
     await buildSwc({ verify: options.verify });
   });
 
@@ -84,7 +84,7 @@ cli
       ...options,
       root,
       vitePath,
-      viteMajor: parseViteMajor(vitePath),
+      viteMajor: parseSwcMajor(vitePath),
       workspace,
     };
     for (const suite of suitesToRun) {
@@ -125,7 +125,7 @@ cli
             skipGit: !isFirstRun,
             root,
             vitePath,
-            viteMajor: parseViteMajor(vitePath),
+            viteMajor: parseSwcMajor(vitePath),
             workspace,
           });
         }
@@ -135,10 +135,10 @@ cli
         return e;
       }
     };
-    await setupViteRepo({ ...options, shallow: false });
+    await setupSwcRepo({ ...options, shallow: false });
     const initialError = await runSuite();
     if (initialError) {
-      await bisectVite(options.good, runSuite);
+      await bisectSwc(options.good, runSuite);
     } else {
       console.log(`no errors for starting commit, cannot bisect`);
     }
