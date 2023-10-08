@@ -25,19 +25,19 @@ cli
   .option("--commit <commit>", "vite commit sha to use")
   .option("--release <version>", "vite release to use from npm registry")
   .action(async (suites, options: CommandOptions) => {
-    const { root, swcPath, workspace } = await setupEnvironment();
+    const { root, vitePath, workspace } = await setupEnvironment();
     const suitesToRun = getSuitesToRun(suites, root);
     let viteMajor;
     if (!options.release) {
       await setupViteRepo(options);
       await buildVite({ verify: options.verify });
-      viteMajor = parseViteMajor(swcPath);
+      viteMajor = parseViteMajor(vitePath);
     } else {
       viteMajor = parseMajorVersion(options.release);
     }
     const runOptions: RunOptions = {
       root,
-      swcPath,
+      vitePath,
       viteMajor,
       workspace,
       release: options.release,
@@ -78,13 +78,13 @@ cli
   })
   .option("--release <version>", "vite release to use from npm registry")
   .action(async (suites, options: CommandOptions) => {
-    const { root, swcPath, workspace } = await setupEnvironment();
+    const { root, vitePath, workspace } = await setupEnvironment();
     const suitesToRun = getSuitesToRun(suites, root);
     const runOptions: RunOptions = {
       ...options,
       root,
-      swcPath,
-      viteMajor: parseViteMajor(swcPath),
+      vitePath,
+      viteMajor: parseViteMajor(vitePath),
       workspace,
     };
     for (const suite of suitesToRun) {
@@ -112,7 +112,7 @@ cli
       );
       process.exit(1);
     }
-    const { root, swcPath, workspace } = await setupEnvironment();
+    const { root, vitePath, workspace } = await setupEnvironment();
     const suitesToRun = getSuitesToRun(suites, root);
     let isFirstRun = true;
     const { verify } = options;
@@ -124,8 +124,8 @@ cli
             verify: !!(isFirstRun && verify),
             skipGit: !isFirstRun,
             root,
-            swcPath,
-            viteMajor: parseViteMajor(swcPath),
+            vitePath,
+            viteMajor: parseViteMajor(vitePath),
             workspace,
           });
         }

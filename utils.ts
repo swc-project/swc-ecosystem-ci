@@ -265,25 +265,25 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
       overrides.vite = options.release;
     }
   } else {
-    overrides.vite ||= `${options.swcPath}/packages/vite`;
+    overrides.vite ||= `${options.vitePath}/packages/vite`;
 
     overrides[
       `@vitejs/plugin-legacy`
-    ] ||= `${options.swcPath}/packages/plugin-legacy`;
+    ] ||= `${options.vitePath}/packages/plugin-legacy`;
     if (options.viteMajor < 4) {
       overrides[
         `@vitejs/plugin-vue`
-      ] ||= `${options.swcPath}/packages/plugin-vue`;
+      ] ||= `${options.vitePath}/packages/plugin-vue`;
       overrides[
         `@vitejs/plugin-vue-jsx`
-      ] ||= `${options.swcPath}/packages/plugin-vue-jsx`;
+      ] ||= `${options.vitePath}/packages/plugin-vue-jsx`;
       overrides[
         `@vitejs/plugin-react`
-      ] ||= `${options.swcPath}/packages/plugin-react`;
+      ] ||= `${options.vitePath}/packages/plugin-react`;
       // vite-3 dependency setup could have caused problems if we don't synchronize node versions
       // vite-4 uses an optional peerDependency instead so keep project types
       const typesNodePath = fs.realpathSync(
-        `${options.swcPath}/node_modules/@types/node`,
+        `${options.vitePath}/node_modules/@types/node`,
       );
       overrides[`@types/node`] ||= `${typesNodePath}`;
     } else {
@@ -307,7 +307,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
 }
 
 export async function setupViteRepo(options: Partial<RepoOptions>) {
-  const repo = options.repo || "swc-project/swc";
+  const repo = options.repo || "vitejs/vite";
   await setupRepo({
     repo,
     dir: swcPath,
@@ -315,36 +315,6 @@ export async function setupViteRepo(options: Partial<RepoOptions>) {
     shallow: true,
     ...options,
   });
-
-  try {
-    const rootPackageJsonFile = path.join(swcPath, "package.json");
-    const rootPackageJson = JSON.parse(
-      await fs.promises.readFile(rootPackageJsonFile, "utf-8"),
-    );
-    const viteMonoRepoNames = ["@swc-project/swc-monorepo", "vite-monorepo"];
-    const { name } = rootPackageJson;
-    if (!viteMonoRepoNames.includes(name)) {
-      throw new Error(
-        `expected  "name" field of ${repo}/package.json to indicate vite monorepo, but got ${name}.`,
-      );
-    }
-    const needsWrite = await overridePackageManagerVersion(
-      rootPackageJson,
-      "pnpm",
-    );
-    if (needsWrite) {
-      fs.writeFileSync(
-        rootPackageJsonFile,
-        JSON.stringify(rootPackageJson, null, 2),
-        "utf-8",
-      );
-      if (rootPackageJson.devDependencies?.pnpm) {
-        await $`pnpm install -Dw pnpm --lockfile-only`;
-      }
-    }
-  } catch (e) {
-    throw new Error(`Failed to setup vite repo`, { cause: e });
-  }
 }
 
 export async function getPermanentRef() {
@@ -549,9 +519,9 @@ export function dirnameFrom(url: string) {
   return path.dirname(fileURLToPath(url));
 }
 
-export function parseViteMajor(swcPath: string): number {
+export function parseViteMajor(vitePath: string): number {
   const content = fs.readFileSync(
-    path.join(swcPath, "packages", "vite", "package.json"),
+    path.join(vitePath, "packages", "vite", "package.json"),
     "utf-8",
   );
   const pkg = JSON.parse(content);
@@ -594,7 +564,7 @@ async function buildOverrides(
     const { dir } = await buildDef.build({
       root: options.root,
       workspace: options.workspace,
-      swcPath: options.swcPath,
+      vitePath: options.vitePath,
       viteMajor: options.viteMajor,
       skipGit: options.skipGit,
       release: options.release,
