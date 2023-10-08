@@ -6,7 +6,7 @@ import { cac } from "cac";
 import {
   setupEnvironment,
   setupViteRepo,
-  buildVite,
+  buildSwc,
   bisectVite,
   parseViteMajor,
   parseMajorVersion,
@@ -30,7 +30,7 @@ cli
     let viteMajor;
     if (!options.release) {
       await setupViteRepo(options);
-      await buildVite({ verify: options.verify });
+      await buildSwc({ verify: options.verify });
       viteMajor = parseViteMajor(vitePath);
     } else {
       viteMajor = parseMajorVersion(options.release);
@@ -63,7 +63,7 @@ cli
   .action(async (options: CommandOptions) => {
     await setupEnvironment();
     await setupViteRepo(options);
-    await buildVite({ verify: options.verify });
+    await buildSwc({ verify: options.verify });
   });
 
 cli
@@ -118,7 +118,7 @@ cli
     const { verify } = options;
     const runSuite = async () => {
       try {
-        await buildVite({ verify: isFirstRun && verify });
+        await buildSwc({ verify: isFirstRun && verify });
         for (const suite of suitesToRun) {
           await run(suite, {
             verify: !!(isFirstRun && verify),

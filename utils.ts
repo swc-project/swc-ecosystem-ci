@@ -328,11 +328,11 @@ export async function getPermanentRef() {
   }
 }
 
-export async function buildVite({ verify = false }) {
+export async function buildSwc({ verify = false }) {
   cd(swcPath);
-  const frozenInstall = getCommand("pnpm", "frozen");
-  const runBuild = getCommand("pnpm", "run", ["build"]);
-  const runTest = getCommand("pnpm", "run", ["build"]);
+  const frozenInstall = getCommand("yarn", "frozen");
+  const runBuild = getCommand("yarn", "run", ["build"]);
+  const runTest = getCommand("yarn", "run", ["build"]);
   await $`${frozenInstall}`;
   await $`${runBuild}`;
   if (verify) {
@@ -461,7 +461,8 @@ export async function applyPackageOverrides(
   // Remove version from agent string:
   // yarn@berry => yarn
   // pnpm@6, pnpm@7 => pnpm
-  const pm = agent?.split("@")[0];
+  // const pm = agent?.split("@")[0];
+  const pm = "yarn";
 
   await overridePackageManagerVersion(pkg, pm);
 
