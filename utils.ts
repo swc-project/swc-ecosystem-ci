@@ -18,7 +18,7 @@ import * as semver from "semver";
 
 const isGitHubActions = !!process.env.GITHUB_ACTIONS;
 
-let vitePath: string;
+let swcPath: string;
 let cwd: string;
 let env: ProcessEnv;
 
@@ -60,7 +60,7 @@ export async function setupEnvironment(): Promise<EnvironmentData> {
   // @ts-expect-error import.meta
   const root = dirnameFrom(import.meta.url);
   const workspace = path.resolve(root, "workspace");
-  vitePath = path.resolve(workspace, "vite");
+  swcPath = path.resolve(workspace, ".swc");
   cwd = process.cwd();
   env = {
     ...process.env,
@@ -72,7 +72,7 @@ export async function setupEnvironment(): Promise<EnvironmentData> {
     NO_COLOR: "1",
   };
   initWorkspace(workspace);
-  return { root, workspace, vitePath, cwd, env };
+  return { root, workspace, swcPath, cwd, env };
 }
 
 function initWorkspace(workspace: string) {
@@ -310,14 +310,14 @@ export async function setupViteRepo(options: Partial<RepoOptions>) {
   const repo = options.repo || "vitejs/vite";
   await setupRepo({
     repo,
-    dir: vitePath,
+    dir: swcPath,
     branch: "main",
     shallow: true,
     ...options,
   });
 
   try {
-    const rootPackageJsonFile = path.join(vitePath, "package.json");
+    const rootPackageJsonFile = path.join(swcPath, "package.json");
     const rootPackageJson = JSON.parse(
       await fs.promises.readFile(rootPackageJsonFile, "utf-8"),
     );
@@ -348,7 +348,7 @@ export async function setupViteRepo(options: Partial<RepoOptions>) {
 }
 
 export async function getPermanentRef() {
-  cd(vitePath);
+  cd(swcPath);
   try {
     const ref = await $`git log -1 --pretty=format:%h`;
     return ref;
@@ -359,7 +359,7 @@ export async function getPermanentRef() {
 }
 
 export async function buildVite({ verify = false }) {
-  cd(vitePath);
+  cd(swcPath);
   const frozenInstall = getCommand("pnpm", "frozen");
   const runBuild = getCommand("pnpm", "run", ["build"]);
   const runTest = getCommand("pnpm", "run", ["build"]);
@@ -379,7 +379,7 @@ export async function bisectVite(
   const resetChanges = async () => $`git reset --hard HEAD`;
 
   try {
-    cd(vitePath);
+    cd(swcPath);
     await resetChanges();
     await $`git bisect start`;
     await $`git bisect bad`;
@@ -393,7 +393,7 @@ export async function bisectVite(
         continue; // see if next commit can be skipped too
       }
       const error = await runSuite();
-      cd(vitePath);
+      cd(swcPath);
       await resetChanges();
       const bisectOut = await $`git bisect ${error ? "bad" : "good"}`;
       bisecting = bisectOut.substring(0, 10).toLowerCase() === "bisecting:"; // as long as git prints 'bisecting: ' there are more revisions to test
@@ -402,7 +402,7 @@ export async function bisectVite(
     console.log("error while bisecting", e);
   } finally {
     try {
-      cd(vitePath);
+      cd(swcPath);
       await $`git bisect reset`;
     } catch (e) {
       console.log("Error while resetting bisect", e);
