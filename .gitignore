@@ -128,3 +128,12 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+.DS_Store
+.DS_Store?
+node_modules
+vite
+workspace
+.pnpm-debug.log
+.idea
