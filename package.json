@@ -5,5 +5,12 @@
   "version": "0.1.0",
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1"
+  }
 }
