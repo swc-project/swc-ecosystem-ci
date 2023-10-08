@@ -3,7 +3,7 @@ import type { Agent } from "@antfu/ni";
 export interface EnvironmentData {
   root: string;
   workspace: string;
-  vitePath: string;
+  swcPath: string;
   cwd: string;
   env: ProcessEnv;
 }
@@ -11,8 +11,8 @@ export interface EnvironmentData {
 export interface RunOptions {
   workspace: string;
   root: string;
-  vitePath: string;
-  viteMajor: number;
+  swcPath: string;
+  swcMajor: number;
   verify?: boolean;
   skipGit?: boolean;
   release?: string;
