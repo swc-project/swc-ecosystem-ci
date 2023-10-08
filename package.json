@@ -37,5 +37,8 @@
     "*": [
       "prettier --write --ignore-unknown"
     ]
+  },
+  "dependencies": {
+    "@antfu/ni": "^0.21.8"
   }
 }
