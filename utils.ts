@@ -397,8 +397,7 @@ export async function applyPackageOverrides(
   // Remove version from agent string:
   // yarn@berry => yarn
   // pnpm@6, pnpm@7 => pnpm
-  // const pm = agent?.split("@")[0];
-  const pm = "yarn";
+  const pm = agent?.split("@")[0];
 
   await overridePackageManagerVersion(pkg, pm);
 
