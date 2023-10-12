@@ -13,7 +13,9 @@ cli
     "run selected suites using specified version of @swc/core",
   )
   .option("--verify", "verify checkouts by running tests", { default: false })
-  .option("--release <version>", "@swc/core release to use from npm registry")
+  .option("--release <version>", "@swc/core release to use from npm registry", {
+    default: "nightly",
+  })
   .action(async (suites, options: CommandOptions) => {
     const { root, swcPath, workspace } = await setupEnvironment();
     await installSwc({ version: options.release });
@@ -42,7 +44,9 @@ cli
     "verify checkout by running tests before using local swc",
     { default: false },
   )
-  .option("--release <version>", "@swc/core release to use from npm registry")
+  .option("--release <version>", "@swc/core release to use from npm registry", {
+    default: "nightly",
+  })
   .action(async (suites, options: CommandOptions) => {
     const { root, swcPath, workspace } = await setupEnvironment();
     await installSwc({ version: options.release });
