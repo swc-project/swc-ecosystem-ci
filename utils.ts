@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { fileURLToPath, pathToFileURL } from "url";
+import { fileURLToPath } from "url";
 import { execaCommand } from "execa";
 import {
   EnvironmentData,
@@ -255,47 +255,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
     await beforeTestCommand?.(pkg.scripts);
     await testCommand?.(pkg.scripts);
   }
-  let overrides = options.overrides || {};
-  if (options.release) {
-    if (overrides.vite && overrides.vite !== options.release) {
-      throw new Error(
-        `conflicting overrides.vite=${overrides.vite} and --release=${options.release} config. Use either one or the other`,
-      );
-    } else {
-      overrides.vite = options.release;
-    }
-  } else {
-    overrides.vite ||= `${options.swcPath}/packages/vite`;
-
-    overrides[
-      `@vitejs/plugin-legacy`
-    ] ||= `${options.swcPath}/packages/plugin-legacy`;
-    if (options.swcMajor < 4) {
-      overrides[
-        `@vitejs/plugin-vue`
-      ] ||= `${options.swcPath}/packages/plugin-vue`;
-      overrides[
-        `@vitejs/plugin-vue-jsx`
-      ] ||= `${options.swcPath}/packages/plugin-vue-jsx`;
-      overrides[
-        `@vitejs/plugin-react`
-      ] ||= `${options.swcPath}/packages/plugin-react`;
-      // vite-3 dependency setup could have caused problems if we don't synchronize node versions
-      // vite-4 uses an optional peerDependency instead so keep project types
-      const typesNodePath = fs.realpathSync(
-        `${options.swcPath}/node_modules/@types/node`,
-      );
-      overrides[`@types/node`] ||= `${typesNodePath}`;
-    } else {
-      // starting with vite-4, we apply automatic overrides
-      const localOverrides = await buildOverrides(pkg, options, overrides);
-      cd(dir); // buildOverrides changed dir, change it back
-      overrides = {
-        ...overrides,
-        ...localOverrides,
-      };
-    }
-  }
+  const overrides = options.overrides || {};
   await applyPackageOverrides(dir, pkg, overrides);
   await beforeBuildCommand?.(pkg.scripts);
   await buildCommand?.(pkg.scripts);
@@ -449,7 +409,7 @@ export async function applyPackageOverrides(
   overrides = Object.fromEntries(
     Object.entries(overrides)
       //eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .filter(([key, value]) => typeof value === "string")
+      .filter(([, value]) => typeof value === "string")
       .map(([key, value]) => [key, useFileProtocol(value as string)]),
   );
   await $`git clean -fdxq`; // remove current install
@@ -531,52 +491,4 @@ export function parseSwcMajor(swcPath: string): number {
 
 export function parseMajorVersion(version: string) {
   return parseInt(version.split(".", 1)[0], 10);
-}
-
-async function buildOverrides(
-  pkg: any,
-  options: RunOptions,
-  repoOverrides: Overrides,
-) {
-  const { root } = options;
-  const buildsPath = path.join(root, "builds");
-  const buildFiles: string[] = fs
-    .readdirSync(buildsPath)
-    .filter((f: string) => !f.startsWith("_") && f.endsWith(".ts"))
-    .map((f) => path.join(buildsPath, f));
-  const buildDefinitions: {
-    packages: { [key: string]: string };
-    build: (options: RunOptions) => Promise<{ dir: string }>;
-    dir?: string;
-  }[] = await Promise.all(buildFiles.map((f) => import(pathToFileURL(f).href)));
-  const deps = new Set([
-    ...Object.keys(pkg.dependencies ?? {}),
-    ...Object.keys(pkg.devDependencies ?? {}),
-    ...Object.keys(pkg.peerDependencies ?? {}),
-  ]);
-
-  const needsOverride = (p: string) =>
-    repoOverrides[p] === true || (deps.has(p) && repoOverrides[p] == null);
-  const buildsToRun = buildDefinitions.filter(({ packages }) =>
-    Object.keys(packages).some(needsOverride),
-  );
-  const overrides: Overrides = {};
-  for (const buildDef of buildsToRun) {
-    const { dir } = await buildDef.build({
-      root: options.root,
-      workspace: options.workspace,
-      swcPath: options.swcPath,
-      swcMajor: options.swcMajor,
-      skipGit: options.skipGit,
-      release: options.release,
-      verify: options.verify,
-      // do not pass along scripts
-    });
-    for (const [name, path] of Object.entries(buildDef.packages)) {
-      if (needsOverride(name)) {
-        overrides[name] = `${dir}/${path}`;
-      }
-    }
-  }
-  return overrides;
 }

@@ -12,7 +12,6 @@ export interface RunOptions {
   workspace: string;
   root: string;
   swcPath: string;
-  swcMajor: number;
   verify?: boolean;
   skipGit?: boolean;
   release?: string;
