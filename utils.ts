@@ -256,6 +256,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
     await testCommand?.(pkg.scripts);
   }
   const overrides = options.overrides || {};
+  overrides["@swc/core"] = path.join(swcPath, "node_modules", "@swc", "core");
   await applyPackageOverrides(dir, pkg, overrides);
   await beforeBuildCommand?.(pkg.scripts);
   await buildCommand?.(pkg.scripts);
@@ -456,4 +457,9 @@ export function dirnameFrom(url: string) {
   return path.dirname(fileURLToPath(url));
 }
 
-export async function overrideSwc() {}
+export async function installSwc({ version }: { version: string }) {
+  cd(swcPath);
+  const install = getCommand("pnpm", "install", [`@swc/core@${version}`]);
+
+  await $`${install}`;
+}
