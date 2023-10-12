@@ -467,3 +467,5 @@ export function parseSwcMajor(swcPath: string): number {
 export function parseMajorVersion(version: string) {
   return parseInt(version.split(".", 1)[0], 10);
 }
+
+export async function overrideSwc() {}

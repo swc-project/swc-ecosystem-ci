@@ -27,13 +27,8 @@ type Task = string | { script: string; args?: string[] } | (() => Promise<any>);
 
 export interface CommandOptions {
   suites?: string[];
-  repo?: string;
-  branch?: string;
-  tag?: string;
-  commit?: string;
   release?: string;
   verify?: boolean;
-  skipGit?: boolean;
 }
 
 export interface RepoOptions {

@@ -3,42 +3,24 @@ import path from "path";
 import process from "process";
 import { cac } from "cac";
 
-import {
-  setupEnvironment,
-  setupSwcRepo,
-  buildSwc,
-  bisectSwc,
-  parseSwcMajor,
-  parseMajorVersion,
-} from "./utils";
+import { setupEnvironment } from "./utils";
 import { CommandOptions, RunOptions } from "./types";
 
 const cli = cac();
 cli
-  .command("[...suites]", "build vite and run selected suites")
+  .command(
+    "[...suites]",
+    "run selected suites using specified version of @swc/core",
+  )
   .option("--verify", "verify checkouts by running tests", { default: false })
-  .option("--repo <repo>", "vite repository to use", {
-    default: "swc-project/swc",
-  })
-  .option("--branch <branch>", "vite branch to use", { default: "main" })
-  .option("--tag <tag>", "vite tag to use")
-  .option("--commit <commit>", "vite commit sha to use")
-  .option("--release <version>", "vite release to use from npm registry")
+  .option("--release <version>", "@swc/core release to use from npm registry")
   .action(async (suites, options: CommandOptions) => {
     const { root, swcPath, workspace } = await setupEnvironment();
     const suitesToRun = getSuitesToRun(suites, root);
-    let swcMajor;
-    if (!options.release) {
-      await setupSwcRepo(options);
-      await buildSwc({ verify: options.verify });
-      swcMajor = parseSwcMajor(swcPath);
-    } else {
-      swcMajor = parseMajorVersion(options.release);
-    }
+
     const runOptions: RunOptions = {
       root,
       swcPath,
-      swcMajor,
       workspace,
       release: options.release,
       verify: options.verify,
@@ -50,33 +32,16 @@ cli
   });
 
 cli
-  .command("build-vite", "build vite only")
-  .option("--verify", "verify vite checkout by running tests", {
-    default: false,
-  })
-  .option("--repo <repo>", "vite repository to use", {
-    default: "swc-project/swc",
-  })
-  .option("--branch <branch>", "vite branch to use", { default: "main" })
-  .option("--tag <tag>", "vite tag to use")
-  .option("--commit <commit>", "vite commit sha to use")
-  .action(async (options: CommandOptions) => {
-    await setupEnvironment();
-    await setupSwcRepo(options);
-    await buildSwc({ verify: options.verify });
-  });
-
-cli
-  .command("run-suites [...suites]", "run single suite with pre-built vite")
+  .command(
+    "run-suites [...suites]",
+    "run single suite with pre-built @swc/core",
+  )
   .option(
     "--verify",
     "verify checkout by running tests before using local vite",
     { default: false },
   )
-  .option("--repo <repo>", "vite repository to use", {
-    default: "swc-project/swc",
-  })
-  .option("--release <version>", "vite release to use from npm registry")
+  .option("--release <version>", "@swc/core release to use from npm registry")
   .action(async (suites, options: CommandOptions) => {
     const { root, swcPath, workspace } = await setupEnvironment();
     const suitesToRun = getSuitesToRun(suites, root);
@@ -84,7 +49,6 @@ cli
       ...options,
       root,
       swcPath,
-      swcMajor: parseSwcMajor(swcPath),
       workspace,
     };
     for (const suite of suitesToRun) {
@@ -92,57 +56,56 @@ cli
     }
   });
 
-cli
-  .command(
-    "bisect [...suites]",
-    "use git bisect to find a commit in vite that broke suites",
-  )
-  .option("--good <ref>", "last known good ref, e.g. a previous tag. REQUIRED!")
-  .option("--verify", "verify checkouts by running tests", { default: false })
-  .option("--repo <repo>", "vite repository to use", {
-    default: "swc-project/swc",
-  })
-  .option("--branch <branch>", "vite branch to use", { default: "main" })
-  .option("--tag <tag>", "vite tag to use")
-  .option("--commit <commit>", "vite commit sha to use")
-  .action(async (suites, options: CommandOptions & { good: string }) => {
-    if (!options.good) {
-      console.log(
-        "you have to specify a known good version with `--good <commit|tag>`",
-      );
-      process.exit(1);
-    }
-    const { root, swcPath, workspace } = await setupEnvironment();
-    const suitesToRun = getSuitesToRun(suites, root);
-    let isFirstRun = true;
-    const { verify } = options;
-    const runSuite = async () => {
-      try {
-        await buildSwc({ verify: isFirstRun && verify });
-        for (const suite of suitesToRun) {
-          await run(suite, {
-            verify: !!(isFirstRun && verify),
-            skipGit: !isFirstRun,
-            root,
-            swcPath,
-            swcMajor: parseSwcMajor(swcPath),
-            workspace,
-          });
-        }
-        isFirstRun = false;
-        return null;
-      } catch (e) {
-        return e;
-      }
-    };
-    await setupSwcRepo({ ...options, shallow: false });
-    const initialError = await runSuite();
-    if (initialError) {
-      await bisectSwc(options.good, runSuite);
-    } else {
-      console.log(`no errors for starting commit, cannot bisect`);
-    }
-  });
+// cli
+//   .command(
+//     "bisect [...suites]",
+//     "use git bisect to find a commit in vite that broke suites",
+//   )
+//   .option("--good <ref>", "last known good ref, e.g. a previous tag. REQUIRED!")
+//   .option("--verify", "verify checkouts by running tests", { default: false })
+//   .option("--repo <repo>", "vite repository to use", {
+//     default: "swc-project/swc",
+//   })
+//   .option("--branch <branch>", "vite branch to use", { default: "main" })
+//   .option("--tag <tag>", "vite tag to use")
+//   .option("--commit <commit>", "vite commit sha to use")
+//   .action(async (suites, options: CommandOptions & { good: string }) => {
+//     if (!options.good) {
+//       console.log(
+//         "you have to specify a known good version with `--good <commit|tag>`",
+//       );
+//       process.exit(1);
+//     }
+//     const { root, swcPath, workspace } = await setupEnvironment();
+//     const suitesToRun = getSuitesToRun(suites, root);
+//     let isFirstRun = true;
+//     const { verify } = options;
+//     const runSuite = async () => {
+//       try {
+//         await buildSwc({ verify: isFirstRun && verify });
+//         for (const suite of suitesToRun) {
+//           await run(suite, {
+//             verify: !!(isFirstRun && verify),
+//             skipGit: !isFirstRun,
+//             root,
+//             swcPath,
+//             workspace,
+//           });
+//         }
+//         isFirstRun = false;
+//         return null;
+//       } catch (e) {
+//         return e;
+//       }
+//     };
+//     await setupSwcRepo({ ...options, shallow: false });
+//     const initialError = await runSuite();
+//     if (initialError) {
+//       await bisectSwc(options.good, runSuite);
+//     } else {
+//       console.log(`no errors for starting commit, cannot bisect`);
+//     }
+//   });
 cli.help();
 cli.parse();
 
