@@ -27,7 +27,7 @@ type Task = string | { script: string; args?: string[] } | (() => Promise<any>);
 
 export interface CommandOptions {
   suites?: string[];
-  release?: string;
+  release: string;
   verify?: boolean;
 }
 

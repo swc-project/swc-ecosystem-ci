@@ -3,7 +3,7 @@ import path from "path";
 import process from "process";
 import { cac } from "cac";
 
-import { setupEnvironment } from "./utils";
+import { installSwc, setupEnvironment } from "./utils";
 import { CommandOptions, RunOptions } from "./types";
 
 const cli = cac();
@@ -16,6 +16,7 @@ cli
   .option("--release <version>", "@swc/core release to use from npm registry")
   .action(async (suites, options: CommandOptions) => {
     const { root, swcPath, workspace } = await setupEnvironment();
+    await installSwc({ version: options.release });
     const suitesToRun = getSuitesToRun(suites, root);
 
     const runOptions: RunOptions = {
@@ -44,6 +45,7 @@ cli
   .option("--release <version>", "@swc/core release to use from npm registry")
   .action(async (suites, options: CommandOptions) => {
     const { root, swcPath, workspace } = await setupEnvironment();
+    await installSwc({ version: options.release });
     const suitesToRun = getSuitesToRun(suites, root);
     const runOptions: RunOptions = {
       ...options,

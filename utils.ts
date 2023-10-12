@@ -56,9 +56,10 @@ export async function $(literals: TemplateStringsArray, ...values: any[]) {
   return result.stdout;
 }
 
+// @ts-expect-error import.meta
+const root = dirnameFrom(import.meta.url);
+
 export async function setupEnvironment(): Promise<EnvironmentData> {
-  // @ts-expect-error import.meta
-  const root = dirnameFrom(import.meta.url);
   const workspace = path.resolve(root, "workspace");
   swcPath = path.resolve(workspace, ".swc");
   cwd = process.cwd();
@@ -256,7 +257,8 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
     await testCommand?.(pkg.scripts);
   }
   const overrides = options.overrides || {};
-  overrides["@swc/core"] = path.join(swcPath, "node_modules", "@swc", "core");
+  overrides["@swc/core"] = path.join(root, "node_modules", "@swc", "core");
+  console.log("OVERRIDES", overrides);
   await applyPackageOverrides(dir, pkg, overrides);
   await beforeBuildCommand?.(pkg.scripts);
   await buildCommand?.(pkg.scripts);
@@ -458,8 +460,8 @@ export function dirnameFrom(url: string) {
 }
 
 export async function installSwc({ version }: { version: string }) {
-  cd(swcPath);
-  const install = getCommand("pnpm", "install", [`@swc/core@${version}`]);
+  cd(root);
+  const install = getCommand("npm", "install", [`@swc/core@${version}`]);
 
   await $`${install}`;
 }
