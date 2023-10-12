@@ -41,9 +41,8 @@ jobs:
       - run: pnpm --version
       - run: pnpm i --frozen-lockfile
       - run: >-
-          pnpm tsx ecosystem-ci.ts
-          --${{ inputs.version }}
-          ${{ inputs.suite }}
+          pnpm tsx ecosystem-ci.ts run-suites ${{ inputs.suite }}
+          --release ${{ inputs.version }}
         id: ecosystem-ci-run
     #   - if: always()
     #     run: pnpm tsx discord-webhook.ts
