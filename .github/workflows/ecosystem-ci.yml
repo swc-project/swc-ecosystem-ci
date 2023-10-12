@@ -33,21 +33,7 @@ jobs:
     strategy:
       matrix:
         suite:
-          - analogjs
-          - astro
-          - histoire
-          # - iles # disabled until its CI is fixed
-          - ladle
-          - laravel
-          - marko
-          - nuxt
-          - nx
-          - previewjs
-          - qwik
-          - rakkas
-          #          - storybook  # disabled until test is updated, see https://github.com/swc-project/swc-ecosystem-ci/issues/130
-          - sveltekit
-          - unocss
+          - rollup-plugin-swc3
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
@@ -65,7 +51,7 @@ jobs:
       - run: pnpm i --frozen-lockfile
       - run: >-
           pnpm tsx ecosystem-ci.ts
-          --${{ inputs.refType || github.event.client_payload.refType || 'branch' }} ${{ inputs.ref || github.event.client_payload.ref || 'main' }}
+          --${{ inputs.refType || github.event.client_payload.refType || 'release' }} ${{ inputs.ref || github.event.client_payload.ref || 'main' }}
           --repo ${{ inputs.repo || github.event.client_payload.repo || 'swc-project/swc' }}
           ${{ matrix.suite }}
         id: ecosystem-ci-run
@@ -73,7 +59,7 @@ jobs:
         run: pnpm tsx discord-webhook.ts
         env:
           WORKFLOW_NAME: ci
-          REF_TYPE: ${{ inputs.refType || github.event.client_payload.refType || 'branch' }}
+          REF_TYPE: ${{ inputs.refType || github.event.client_payload.refType || 'release' }}
           REF: ${{ inputs.ref || github.event.client_payload.ref || 'main' }}
           REPO: ${{ inputs.repo || github.event.client_payload.repo || 'swc-project/swc' }}
           SUITE: ${{ matrix.suite }}
