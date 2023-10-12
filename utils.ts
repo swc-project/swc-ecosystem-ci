@@ -463,5 +463,5 @@ export async function installSwc({ version }: { version: string }) {
   await fs.promises.mkdir(swcPath, { recursive: true });
   await fs.promises.writeFile(path.join(swcPath, "package.json"), "{}", "utf8");
   cd(swcPath);
-  await $`npm install @swc/core@${version} --no-save --legacy-peer-deps`;
+  await $`npm install @swc/core@${version} --no-save`;
 }
