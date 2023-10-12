@@ -45,11 +45,11 @@ jobs:
           --${{ inputs.version }}
           ${{ inputs.suite }}
         id: ecosystem-ci-run
-      - if: always()
-        run: pnpm tsx discord-webhook.ts
-        env:
-          WORKFLOW_NAME: ci-selected
-          SUITE: ${{ inputs.suite }}
-          STATUS: ${{ job.status }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   - if: always()
+    #     run: pnpm tsx discord-webhook.ts
+    #     env:
+    #       WORKFLOW_NAME: ci-selected
+    #       SUITE: ${{ inputs.suite }}
+    #       STATUS: ${{ job.status }}
+    #       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
