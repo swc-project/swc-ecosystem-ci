@@ -124,7 +124,10 @@ function getSuitesToRun(suites: string[], root: string) {
     .filter((f: string) => !f.startsWith("_") && f.endsWith(".ts"))
     .map((f: string) => f.slice(0, -3));
   availableSuites.sort();
-  if (suitesToRun.length === 0) {
+  if (
+    suitesToRun.length === 0 ||
+    (suitesToRun.length === 1 && suitesToRun[0] === "_")
+  ) {
     suitesToRun = availableSuites;
   } else {
     const invalidSuites = suitesToRun.filter(
