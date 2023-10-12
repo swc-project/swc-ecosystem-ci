@@ -14,21 +14,14 @@ on:
         required: true
         type: choice
         options:
-          - branch
-          - tag
           - commit
           - release
-        default: "branch"
+        default: "release"
       ref:
-        description: "vite ref to use"
+        description: "swc version to use"
         required: true
         type: string
         default: "main"
-      repo:
-        description: "vite repository to use"
-        required: true
-        type: string
-        default: "swc-project/swc"
       suite:
         description: "testsuite to run"
         required: true
@@ -50,15 +43,6 @@ on:
           - sveltekit
           - unocss
           - vike
-          - vite-plugin-pwa
-          - vite-plugin-react
-          - vite-plugin-react-pages
-          - vite-plugin-react-swc
-          - vite-plugin-svelte
-          - vite-plugin-vue
-          - vite-setup-catalogue
-          - vitepress
-          - vitest
 jobs:
   execute-selected-suite:
     timeout-minutes: 30

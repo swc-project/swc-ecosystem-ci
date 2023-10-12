@@ -1,5 +1,5 @@
 # integration tests for vite ecosystem projects - scheduled or manual run for all suites
-name: vite-ecosystem-ci
+name: swc-ecosystem-ci
 
 env:
   # 7 GiB by default on GitHub, setting to 6 GiB
@@ -16,21 +16,14 @@ on:
         required: true
         type: choice
         options:
-          - branch
-          - tag
           - commit
           - release
         default: "branch"
       ref:
-        description: "vite ref to use"
+        description: "swc version to use"
         required: true
         type: string
         default: "main"
-      repo:
-        description: "vite repository to use"
-        required: true
-        type: string
-        default: "swc-project/swc"
   repository_dispatch:
     types: [ecosystem-ci]
 jobs:
@@ -55,16 +48,6 @@ jobs:
           #          - storybook  # disabled until test is updated, see https://github.com/swc-project/swc-ecosystem-ci/issues/130
           - sveltekit
           - unocss
-          - vike
-          - vite-plugin-pwa
-          - vite-plugin-react
-          - vite-plugin-react-pages
-          - vite-plugin-react-swc
-          - vite-plugin-svelte
-          - vite-plugin-vue
-          - vite-setup-catalogue
-          - vitepress
-          - vitest
       fail-fast: false
     steps:
       - uses: actions/checkout@v4

@@ -38,7 +38,7 @@ cli
   )
   .option(
     "--verify",
-    "verify checkout by running tests before using local vite",
+    "verify checkout by running tests before using local swc",
     { default: false },
   )
   .option("--release <version>", "@swc/core release to use from npm registry")

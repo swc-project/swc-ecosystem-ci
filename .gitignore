@@ -133,7 +133,7 @@ dist
 .DS_Store
 .DS_Store?
 node_modules
-vite
+.swc
 workspace
 .pnpm-debug.log
 .idea
