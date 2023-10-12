@@ -461,7 +461,5 @@ export function dirnameFrom(url: string) {
 
 export async function installSwc({ version }: { version: string }) {
   cd(root);
-  const install = getCommand("npm", "install", [`@swc/core@${version}`]);
-
-  await $`${install}`;
+  await $`npm install @swc/core@${version} --no-save --legacy-peer-deps`;
 }
