@@ -1,5 +1,5 @@
-# integration tests for vite ecosystem - single run of selected testsuite
-name: vite-ecosystem-ci-selected
+# integration tests for swc ecosystem - single run of selected testsuite
+name: swc-ecosystem-ci-selected
 
 env:
   # 7 GiB by default on GitHub, setting to 6 GiB
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       refType:
-        description: "type of vite ref to use"
+        description: "type of swc ref to use"
         required: true
         type: choice
         options:

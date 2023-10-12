@@ -1,4 +1,4 @@
-# integration tests for vite ecosystem projects - scheduled or manual run for all suites
+# integration tests for swc ecosystem projects - scheduled or manual run for all suites
 name: swc-ecosystem-ci
 
 env:
@@ -18,7 +18,7 @@ on:
         options:
           - commit
           - release
-        default: "branch"
+        default: "release"
       ref:
         description: "swc version to use"
         required: true
