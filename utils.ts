@@ -266,17 +266,6 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
   return { dir };
 }
 
-export async function setupSwcRepo(options: Partial<RepoOptions>) {
-  const repo = options.repo || "vitejs/vite";
-  await setupRepo({
-    repo,
-    dir: swcPath,
-    branch: "main",
-    shallow: true,
-    ...options,
-  });
-}
-
 export async function getPermanentRef() {
   cd(swcPath);
   try {
@@ -287,19 +276,6 @@ export async function getPermanentRef() {
     return undefined;
   }
 }
-
-export async function buildSwc({ verify = false }) {
-  cd(swcPath);
-  const frozenInstall = getCommand("yarn", "frozen");
-  const runBuild = getCommand("yarn", "run", ["build"]);
-  const runTest = getCommand("yarn", "run", ["build"]);
-  await $`${frozenInstall}`;
-  await $`${runBuild}`;
-  if (verify) {
-    await $`${runTest}`;
-  }
-}
-
 export async function bisectSwc(
   good: string,
   runSuite: () => Promise<Error | void>,
