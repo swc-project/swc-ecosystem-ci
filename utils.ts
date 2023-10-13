@@ -450,8 +450,9 @@ export async function applyPackageOverrides(
   } else if (pm === "yarn") {
     await $`yarn install`;
   } else if (pm === "npm") {
-    // TOOD(kdy1): This is required just for https://github.com/SukkaW/rollup-plugin-swc
-    await $`npm install --legacy-peer-deps`;
+    // The transitive dependencies of the linked dependencies will not be installed by `npm i` unless `--install-links` is specified.
+    // See https://github.com/npm/cli/issues/2339#issuecomment-1111228605
+    await $`npm install --install-links`;
   }
 }
 
