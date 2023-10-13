@@ -258,6 +258,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
   }
   const overrides = options.overrides || {};
   overrides["@swc/core"] = path.join(swcPath, "node_modules", "@swc", "core");
+  overrides["@swc/types"] = path.join(swcPath, "node_modules", "@swc", "types");
   console.log("OVERRIDES", overrides);
   await applyPackageOverrides(dir, pkg, overrides);
   await beforeBuildCommand?.(pkg.scripts);
@@ -463,5 +464,5 @@ export async function installSwc({ version }: { version: string }) {
   await fs.promises.mkdir(swcPath, { recursive: true });
   await fs.promises.writeFile(path.join(swcPath, "package.json"), "{}", "utf8");
   cd(swcPath);
-  await $`npm install @swc/core@${version} --no-save`;
+  await $`npm install @swc/core@${version} @swc/types --no-save`;
 }
