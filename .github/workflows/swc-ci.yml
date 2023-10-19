@@ -20,6 +20,7 @@ on:
         default: "_"
         options:
           - "_"
+          - payload-cms
           - rollup-plugin-swc3
 
 jobs:
