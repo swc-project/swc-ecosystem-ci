@@ -2,13 +2,15 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/gocolly/colly/v2"
 )
 
 func main() {
+	_ = os.Mkdir(".cache", os.ModePerm)
 
-	c := colly.NewCollector(colly.AllowedDomains("github.com"), colly.CacheDir(("/.cache")))
+	c := colly.NewCollector(colly.AllowedDomains("github.com"), colly.CacheDir((".cache")))
 
 	// Find and visit all links
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
