@@ -60,5 +60,5 @@ func main() {
 		fmt.Println("Visiting", r.URL)
 	})
 
-	c.Visit("https://github.com/swc-project/swc/network/dependents?package_id=UGFja2FnZS00Njc1MTk4MDQ%3D")
+	c.Visit("https://github.com/swc-project/swc/network/dependents?dependent_type=PACKAGE&package_id=UGFja2FnZS00Njc1MTk4MDQ%3D")
 }
