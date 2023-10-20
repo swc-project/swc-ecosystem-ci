@@ -65,4 +65,5 @@ func main() {
 	})
 
 	c.Visit("https://github.com/swc-project/swc/network/dependents?dependent_type=PACKAGE&package_id=UGFja2FnZS00Njc1MTk4MDQ%3D")
+	// c.Visit("https://github.com/parcel-bundler/parcel/network/dependents?dependent_type=REPOSITORY&package_id=UGFja2FnZS0yOTE0Mjg3MjM4")
 }
