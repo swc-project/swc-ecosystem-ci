@@ -47,6 +47,10 @@ func main() {
 
 		nextUrl := e.Attr("href")
 
+		if strings.Contains(nextUrl, "dependents_before") {
+			return
+		}
+
 		for _, b := range blocked {
 			if strings.Contains(nextUrl, b) {
 				return
