@@ -20,6 +20,7 @@ on:
         default: "_"
         options:
           - "_"
+          - bunchee
           - payload-cms
           - rollup-plugin-swc3
           - swr
