@@ -29,7 +29,22 @@ func main() {
 	c := colly.NewCollector(colly.AllowedDomains("github.com"), colly.CacheDir((".cache")))
 
 	// Find and visit all links
-	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
+	c.OnHTML("a[data-hovercard-type=repository]", func(e *colly.HTMLElement) {
+
+		nextUrl := e.Attr("href")
+
+		for _, b := range blocked {
+			if strings.Contains(nextUrl, b) {
+				return
+			}
+		}
+
+		e.Request.Visit(nextUrl)
+	})
+
+	// Find and visit all links
+	c.OnHTML(".paginate-container a[href]", func(e *colly.HTMLElement) {
+
 		nextUrl := e.Attr("href")
 
 		for _, b := range blocked {
