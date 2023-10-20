@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/gocolly/colly/v2"
 )
@@ -15,6 +16,13 @@ func main() {
 	// Find and visit all links
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		nextUrl := e.Attr("href")
+
+		if strings.Contains(nextUrl, "site") ||
+			strings.Contains(nextUrl, "password") ||
+			strings.Contains(nextUrl, "login") ||
+			strings.Contains(nextUrl, "signup") {
+			return
+		}
 
 		e.Request.Visit(nextUrl)
 	})
