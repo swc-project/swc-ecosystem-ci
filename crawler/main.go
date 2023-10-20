@@ -8,6 +8,21 @@ import (
 	"github.com/gocolly/colly/v2"
 )
 
+var blocked = []string{
+	"/orgs",
+	"/site",
+	"/topics",
+	"/about",
+	"/readme",
+	"/login",
+	"/signup",
+	"/features",
+	"/trending",
+	"/enterprise",
+	"/customer-stories",
+	"/roadmap",
+}
+
 func main() {
 	_ = os.Mkdir(".cache", os.ModePerm)
 
@@ -17,11 +32,10 @@ func main() {
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		nextUrl := e.Attr("href")
 
-		if strings.Contains(nextUrl, "site") ||
-			strings.Contains(nextUrl, "password") ||
-			strings.Contains(nextUrl, "login") ||
-			strings.Contains(nextUrl, "signup") {
-			return
+		for _, b := range blocked {
+			if strings.Contains(nextUrl, b) {
+				return
+			}
 		}
 
 		e.Request.Visit(nextUrl)
