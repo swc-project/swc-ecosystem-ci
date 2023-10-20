@@ -60,6 +60,10 @@ func main() {
 		e.Request.Visit(nextUrl)
 	})
 
+	c.OnHTML("#repo-stars-counter-star", func(e *colly.HTMLElement) {
+		fmt.Println(e.Request.URL, ": Star = ", e.DOM.Text())
+	})
+
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL)
 	})
