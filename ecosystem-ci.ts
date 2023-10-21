@@ -53,7 +53,7 @@ cli
     const suitesToRun = getSuitesToRun(suites, root);
 
     if (suites.length === 0 || (suites.length === 1 && suites[0] === "_")) {
-      const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN! });
+      const octokit = new Octokit({ auth: process.env.BOT_GH_TOKEN! });
 
       for (const testSuite of suitesToRun) {
         await octokit.request(
