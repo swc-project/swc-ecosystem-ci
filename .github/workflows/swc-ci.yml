@@ -22,6 +22,7 @@ on:
           - payload-cms
           - rollup-plugin-swc3
           - swr
+          - vercel-cli
 
 jobs:
   execute-selected-suite:
