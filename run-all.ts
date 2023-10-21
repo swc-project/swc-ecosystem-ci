@@ -14,7 +14,7 @@ async function runAll() {
     await octokit.rest.actions.createWorkflowDispatch({
       owner: "swc-project",
       repo: "swc-ecosystem-ci",
-      workflow_id: "6597429593",
+      workflow_id: "72388640",
       ref: "main",
       inputs: {
         suite: testSuite,
