@@ -25,6 +25,7 @@ on:
 
 jobs:
   execute-selected-suite:
+    name: Test ${{ inputs.suite }} with ${{ inputs.version }}
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
