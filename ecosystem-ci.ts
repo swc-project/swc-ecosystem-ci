@@ -5,6 +5,7 @@ import { cac } from "cac";
 
 import { installSwc, setupEnvironment } from "./utils";
 import { CommandOptions, RunOptions } from "./types";
+import { Octokit } from "@octokit/core";
 
 const cli = cac();
 cli
@@ -49,8 +50,32 @@ cli
   })
   .action(async (suites, options: CommandOptions) => {
     const { root, swcPath, workspace } = await setupEnvironment();
-    await installSwc({ version: options.release });
     const suitesToRun = getSuitesToRun(suites, root);
+
+    if (suites.length === 0 || (suites.length === 1 && suites[0] === "_")) {
+      const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN! });
+
+      for (const testSuite of suitesToRun) {
+        await octokit.request(
+          "POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches",
+          {
+            owner: "swc-project",
+            repo: "swc-ecosystem-ci",
+            workflow_id: "6597429593",
+            ref: "main",
+            inputs: {
+              suite: testSuite,
+            },
+            headers: {
+              "X-GitHub-Api-Version": "2022-11-28",
+            },
+          },
+        );
+      }
+      return;
+    }
+
+    await installSwc({ version: options.release });
     const runOptions: RunOptions = {
       ...options,
       root,
