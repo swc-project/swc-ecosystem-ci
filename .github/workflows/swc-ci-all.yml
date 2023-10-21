@@ -13,15 +13,6 @@ on:
         required: true
         type: string
         default: "nightly"
-      suite:
-        description: "test suites to run. Select _ to run all tests"
-        required: true
-        type: choice
-        options:
-          - bunchee
-          - payload-cms
-          - rollup-plugin-swc3
-          - swr
 
 jobs:
   execute-selected-suite:
@@ -41,15 +32,6 @@ jobs:
       - run: corepack enable
       - run: pnpm --version
       - run: pnpm i --frozen-lockfile
-      - run: >-
-          pnpm tsx ecosystem-ci.ts run-suites ${{ inputs.suite }}
-          --release ${{ inputs.version }}
-        id: ecosystem-ci-run
-    #   - if: always()
-    #     run: pnpm tsx discord-webhook.ts
-    #     env:
-    #       WORKFLOW_NAME: ci-selected
-    #       SUITE: ${{ inputs.suite }}
-    #       STATUS: ${{ job.status }}
-    #       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm tsx run-all.ts
+        env:
+          SWC_RELEASE: ${{ github.event.inputs.version }}
