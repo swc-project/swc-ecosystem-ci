@@ -1,4 +1,4 @@
-name: Ecosystem CI
+name: All
 
 env:
   # 7 GiB by default on GitHub, setting to 6 GiB
