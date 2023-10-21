@@ -1,6 +1,5 @@
 import { Octokit } from "octokit";
-import { getSuitesToRun } from "./ecosystem-ci";
-import { setupEnvironment } from "./utils";
+import { getSuitesToRun, setupEnvironment } from "./utils";
 
 async function runAll() {
   const { root } = await setupEnvironment();

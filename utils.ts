@@ -468,3 +468,28 @@ export async function installSwc({ version }: { version: string }) {
   cd(swcPath);
   await $`npm install @swc/core@${version} @swc/jest @swc/types ts-node@11.0.0-beta.1 --no-save --force`;
 }
+
+export function getSuitesToRun(suites: string[], root: string) {
+  let suitesToRun: string[] = suites;
+  const availableSuites: string[] = fs
+    .readdirSync(path.join(root, "tests"))
+    .filter((f: string) => !f.startsWith("_") && f.endsWith(".ts"))
+    .map((f: string) => f.slice(0, -3));
+  availableSuites.sort();
+  if (
+    suitesToRun.length === 0 ||
+    (suitesToRun.length === 1 && suitesToRun[0] === "_")
+  ) {
+    suitesToRun = availableSuites;
+  } else {
+    const invalidSuites = suitesToRun.filter(
+      (x) => !x.startsWith("_") && !availableSuites.includes(x),
+    );
+    if (invalidSuites.length) {
+      console.log(`invalid suite(s): ${invalidSuites.join(", ")}`);
+      console.log(`available suites: ${availableSuites.join(", ")}`);
+      process.exit(1);
+    }
+  }
+  return suitesToRun;
+}
