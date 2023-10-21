@@ -31,3 +31,4 @@ jobs:
       - run: pnpm tsx run-all.ts
         env:
           SWC_RELEASE: ${{ github.event.inputs.version }}
+          BOT_GH_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
