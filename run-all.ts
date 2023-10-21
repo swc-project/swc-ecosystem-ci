@@ -1,4 +1,4 @@
-import { Octokit } from "@octokit/core";
+import { Octokit } from "octokit";
 import { getSuitesToRun } from "./ecosystem-ci";
 import { setupEnvironment } from "./utils";
 
@@ -8,22 +8,18 @@ async function runAll() {
 
   const octokit = new Octokit({ auth: process.env.BOT_GH_TOKEN! });
 
+  console.log(await octokit.rest.users.getAuthenticated());
+
   for (const testSuite of suitesToRun) {
-    await octokit.request(
-      "POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches",
-      {
-        owner: "swc-project",
-        repo: "swc-ecosystem-ci",
-        workflow_id: "6597429593",
-        ref: "main",
-        inputs: {
-          suite: testSuite,
-        },
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
+    await octokit.rest.actions.createWorkflowDispatch({
+      owner: "swc-project",
+      repo: "swc-ecosystem-ci",
+      workflow_id: "6597429593",
+      ref: "main",
+      inputs: {
+        suite: testSuite,
       },
-    );
+    });
   }
 }
 
