@@ -15,7 +15,7 @@ on:
         default: "nightly"
 
 jobs:
-  execute-selected-suite:
+  run-all:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
@@ -24,10 +24,6 @@ jobs:
         with:
           node-version: 18
         id: setup-node
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
-        id: setup-deno
         continue-on-error: true
       - run: corepack enable
       - run: pnpm --version
