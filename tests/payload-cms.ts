@@ -7,6 +7,6 @@ export async function test(options: RunOptions) {
     repo: "payloadcms/payload",
     branch: "main",
     build: "build",
-    test: ["test --ignore"],
+    test: ["test:components", "test:int"],
   });
 }
