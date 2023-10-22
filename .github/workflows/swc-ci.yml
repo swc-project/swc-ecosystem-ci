@@ -49,6 +49,7 @@ jobs:
         name: Download previous result
         uses: actions/checkout@v4
         with:
+          repository: swc-project/raw-green-data
           path: "green-data"
 
       - if: always()
