@@ -42,9 +42,11 @@ jobs:
           --release ${{ inputs.version }}
         id: ecosystem-ci-run
 
-      - if: always()
+      - if: failure()
         name: Discord Webhook Action
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          content: "Test for ${{ inputs.suite }} with ${{ inputs.version }} finished with ${{ job.status }}"
+          content: |
+            Test for ${{ inputs.suite }} with ${{ inputs.version }} failed.
+            See https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}/job/${{ job.container.id }} for details.
