@@ -7,6 +7,6 @@ export async function test(options: RunOptions) {
     repo: "mswjs/msw",
     branch: "main",
     build: "build",
-    test: "test:ci",
+    test: "test",
   });
 }
