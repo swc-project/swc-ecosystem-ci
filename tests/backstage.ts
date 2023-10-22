@@ -6,7 +6,7 @@ export async function test(options: RunOptions) {
     ...options,
     repo: "backstage/backstage",
     branch: "master",
-    build: "build:all",
+    build: ["tsc:full", "build:all"],
     test: "test",
   });
 }
