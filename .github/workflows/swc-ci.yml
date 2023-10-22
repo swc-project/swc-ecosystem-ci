@@ -70,7 +70,7 @@ jobs:
         with:
           token: ${{ secrets.BOT_GH_TOKEN }}
           branch: main
-          folder: raw-data/${{ inputs.suite }}
+          folder: raw-data/.data/${{ inputs.suite }}
           clean: false
           single-commit: true
           git-config-email: github-bot@swc.rs
