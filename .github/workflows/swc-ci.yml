@@ -71,7 +71,7 @@ jobs:
           branch: main
           folder: green-data
           clean: false
-          single-commit: true
+          single-commit: false
           git-config-email: github-bot@swc.rs
           repository-name: swc-project/raw-green-data
           commit-message: "Update"
