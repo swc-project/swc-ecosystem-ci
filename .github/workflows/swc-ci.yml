@@ -49,4 +49,4 @@ jobs:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           content: |
             Test for ${{ inputs.suite }} with ${{ inputs.version }} failed.
-            See https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}/job/${{ github.job }} for details.
+            See https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }} for details.
