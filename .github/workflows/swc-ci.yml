@@ -41,11 +41,10 @@ jobs:
           pnpm tsx ecosystem-ci.ts run-suites ${{ inputs.suite }}
           --release ${{ inputs.version }}
         id: ecosystem-ci-run
-    #   - if: always()
-    #     run: pnpm tsx discord-webhook.ts
-    #     env:
-    #       WORKFLOW_NAME: ci-selected
-    #       SUITE: ${{ inputs.suite }}
-    #       STATUS: ${{ job.status }}
-    #       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - if: always()
+        name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          content: "Test for ${{ inputs.suite }} with ${{ inputs.version }} finished with ${{ job.status }}"
