@@ -49,18 +49,20 @@ jobs:
         name: Download previous result
         uses: actions/checkout@v4
         with:
+          path: "raw-data"
           sparse-checkout: |
-            raw-data/${{ inputs.suite }}
-
-      - if: success()
-        name: "Mark last success"
-        run: |
-          echo "https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}" > last-success.txt
+            .data/${{ inputs.suite }}
 
       - if: always()
         name: "Last"
         run: |
-          echo "${{ job.status }}" >> last.txt
+          mkdir -p .data/${{ inputs.suite }}
+          echo "${{ job.status }}" >> .data/${{ inputs.suite }}/last.txt
+
+      - if: success()
+        name: "Mark last success"
+        run: |
+          echo "https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}" > .data/${{ inputs.suite }}/last-success.txt
 
       - if: always()
         name: Upload result
