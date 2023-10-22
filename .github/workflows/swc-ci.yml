@@ -45,6 +45,36 @@ jobs:
           --release ${{ inputs.version }}
         id: ecosystem-ci-run
 
+      - if: always()
+        name: Download previous result
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            raw-data/${{ inputs.suite }}
+
+      - if: success()
+        name: "Mark last success"
+        run: |
+          echo "https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}" > last-success.txt
+
+      - if: always()
+        name: "Last"
+        run: |
+          echo "${{ job.status }}" >> last.txt
+
+      - if: always()
+        name: Upload result
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          token: ${{ secrets.BOT_GH_TOKEN }}
+          branch: main
+          folder: raw-data/${{ inputs.suite }}
+          clean: false
+          single-commit: true
+          git-config-email: github-bot@swc.rs
+          repository-name: swc-project/raw-green-data
+          commit-message: "Update"
+
       - if: failure()
         name: Discord Webhook Action
         uses: tsickert/discord-webhook@v5.3.0
