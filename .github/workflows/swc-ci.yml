@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}" > green-data/${{ inputs.suite }}/last-success.txt
 
-      - if: always()
+      - if: success() || failure()
         name: Upload result
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
