@@ -16,12 +16,7 @@ on:
       suite:
         description: "test suites to run. Select _ to run all tests"
         required: true
-        type: choice
-        options:
-          - bunchee
-          - payload-cms
-          - rollup-plugin-swc3
-          - swr
+        type: string
 
 jobs:
   execute-selected-suite:
