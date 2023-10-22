@@ -261,7 +261,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
   overrides["@swc/core"] = path.join(swcPath, "node_modules", "@swc", "core");
   overrides["@swc/types"] = path.join(swcPath, "node_modules", "@swc", "types");
   console.log("OVERRIDES", overrides);
-  await applyPackageOverrides(dir, pkg, overrides);
+  await applyPackageOverrides(dir, pkg, agent, overrides);
   await beforeBuildCommand?.(pkg.scripts);
   await buildCommand?.(pkg.scripts);
   if (test) {
@@ -392,6 +392,7 @@ async function overridePackageManagerVersion(
 export async function applyPackageOverrides(
   dir: string,
   pkg: any,
+  agent: Agent | null,
   overrides: Overrides = {},
 ) {
   const useFileProtocol = (v: string) =>
@@ -405,7 +406,9 @@ export async function applyPackageOverrides(
   );
   await $`git clean -fdxq`; // remove current install
 
-  const agent = await detect({ cwd: dir, autoInstall: false });
+  if (!agent) {
+    agent = await detect({ cwd: dir, autoInstall: false });
+  }
   if (!agent) {
     throw new Error(`failed to detect packageManager in ${dir}`);
   }
