@@ -56,7 +56,7 @@ jobs:
         name: "Last"
         run: |
           mkdir -p green-data/${{ inputs.suite }}
-          echo "${{ job.status }}" >> green-data/${{ inputs.suite }}/last.txt
+          echo "${{ job.status }}" > green-data/${{ inputs.suite }}/last.txt
 
       - if: success()
         name: "Mark last success"
