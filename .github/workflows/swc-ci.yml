@@ -49,18 +49,18 @@ jobs:
         name: Download previous result
         uses: actions/checkout@v4
         with:
-          path: "greeen-data"
+          path: "green-data"
 
       - if: always()
         name: "Last"
         run: |
-          mkdir -p greeen-data/${{ inputs.suite }}
-          echo "${{ job.status }}" >> greeen-data/${{ inputs.suite }}/last.txt
+          mkdir -p green-data/${{ inputs.suite }}
+          echo "${{ job.status }}" >> green-data/${{ inputs.suite }}/last.txt
 
       - if: success()
         name: "Mark last success"
         run: |
-          echo "https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}" > greeen-data/${{ inputs.suite }}/last-success.txt
+          echo "https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}" > green-data/${{ inputs.suite }}/last-success.txt
 
       - if: always()
         name: Upload result
@@ -68,7 +68,7 @@ jobs:
         with:
           token: ${{ secrets.BOT_GH_TOKEN }}
           branch: gh-pages
-          folder: greeen-data
+          folder: green-data
           clean: false
           single-commit: true
           git-config-email: github-bot@swc.rs
