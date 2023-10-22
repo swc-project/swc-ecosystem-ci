@@ -5,32 +5,6 @@ import { getSuitesToRun, installSwc, setupEnvironment } from "./utils";
 import { CommandOptions, RunOptions } from "./types";
 
 const cli = cac();
-cli
-  .command(
-    "[...suites]",
-    "run selected suites using specified version of @swc/core",
-  )
-  .option("--verify", "verify checkouts by running tests", { default: false })
-  .option("--release <version>", "@swc/core release to use from npm registry", {
-    default: "nightly",
-  })
-  .action(async (suites, options: CommandOptions) => {
-    const { root, swcPath, workspace } = await setupEnvironment();
-    await installSwc({ version: options.release });
-    const suitesToRun = getSuitesToRun(suites, root);
-
-    const runOptions: RunOptions = {
-      root,
-      swcPath,
-      workspace,
-      release: options.release,
-      verify: options.verify,
-      skipGit: false,
-    };
-    for (const suite of suitesToRun) {
-      await run(suite, runOptions);
-    }
-  });
 
 cli
   .command(
