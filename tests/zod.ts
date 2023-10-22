@@ -8,6 +8,6 @@ export async function test(options: RunOptions) {
     branch: "master",
     build: "build",
     test: ["test:swc"],
-    agent: "pnpm",
+    agent: "yarn",
   });
 }
