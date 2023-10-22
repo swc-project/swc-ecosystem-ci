@@ -2,11 +2,12 @@ import { runInRepo } from "../utils";
 import { RunOptions } from "../types";
 
 export async function test(options: RunOptions) {
+  // https://github.com/mswjs/msw/blob/2f7215294cac98149757f57118c7492d31a2a8e0/.github/workflows/ci.yml
   await runInRepo({
     ...options,
     repo: "nrwl/nx",
     branch: "master",
     build: "build",
-    test: "test",
+    test: ["test:unit", "test:node", "test:browser"],
   });
 }
