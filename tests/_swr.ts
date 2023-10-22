@@ -7,6 +7,6 @@ export async function test(options: RunOptions) {
     repo: "vercel/swr",
     branch: "main",
     build: "build",
-    test: ["test"],
+    test: "test",
   });
 }
