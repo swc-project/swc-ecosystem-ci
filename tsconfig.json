@@ -1,5 +1,5 @@
 {
-  "include": ["./**/*.ts", "tests/.payload-cms.ts"],
+  "include": ["./**/*.ts"],
   "exclude": ["**/node_modules/**"],
   "compilerOptions": {
     "target": "esnext",
