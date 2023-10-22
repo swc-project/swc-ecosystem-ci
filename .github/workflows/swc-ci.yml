@@ -52,7 +52,7 @@ jobs:
           repository: swc-project/raw-green-data
           path: "green-data"
 
-      - if: always()
+      - if: success() || failure()
         name: "Last"
         run: |
           mkdir -p green-data/${{ inputs.suite }}
