@@ -74,7 +74,7 @@ jobs:
           single-commit: false
           git-config-email: github-bot@swc.rs
           repository-name: swc-project/raw-green-data
-          commit-message: "Update ${{ inputs.suite }}"
+          commit-message: "Update ${{ inputs.suite }}: ${{ job.status }}"
 
       - if: failure()
         name: Discord Webhook Action
