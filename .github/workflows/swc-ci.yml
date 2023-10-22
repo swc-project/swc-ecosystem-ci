@@ -67,7 +67,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
           token: ${{ secrets.BOT_GH_TOKEN }}
-          branch: main
+          branch: gh-pages
           folder: greeen-data
           clean: false
           single-commit: true
