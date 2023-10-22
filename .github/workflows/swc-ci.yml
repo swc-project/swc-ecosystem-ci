@@ -22,6 +22,9 @@ jobs:
   execute-selected-suite:
     name: Test ${{ inputs.suite }} with ${{ inputs.version }}
     timeout-minutes: 30
+    concurrency:
+      group: swc-ci-project=${{ inputs.suite }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
