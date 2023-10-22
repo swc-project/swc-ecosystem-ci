@@ -348,7 +348,9 @@ async function overridePackageManagerVersion(
   pm: string,
 ): Promise<boolean> {
   if (!pkg.packageManager && (pm === "pnpm" || pm === "yarn")) {
-    pkg.packageManager = `${pm}@${await $`${pm} --version`}`;
+    const ver = await $`(cd ~ && ${pm} --version)`;
+    console.log(`Using`, ver);
+    pkg.packageManager = `${pm}@${ver}`;
     return true;
   }
 
