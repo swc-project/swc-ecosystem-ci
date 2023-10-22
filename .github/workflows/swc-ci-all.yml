@@ -6,6 +6,9 @@ env:
   NODE_OPTIONS: --max-old-space-size=6144
 
 on:
+  schedule:
+    # Once a day
+    - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       version:
@@ -30,5 +33,5 @@ jobs:
       - run: pnpm i --frozen-lockfile
       - run: pnpm tsx run-all.ts
         env:
-          SWC_RELEASE: ${{ github.event.inputs.version }}
+          SWC_RELEASE: ${{ github.event.inputs.version || 'nightly' }}
           BOT_GH_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
