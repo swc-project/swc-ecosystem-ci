@@ -7,6 +7,6 @@ export async function test(options: RunOptions) {
     repo: "tldraw/tldraw",
     branch: "main",
     build: "build",
-    test: ["test:components", "test:int"],
+    test: ["test"],
   });
 }
