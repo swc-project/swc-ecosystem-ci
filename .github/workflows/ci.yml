@@ -36,6 +36,11 @@ jobs:
           cat ./vars.txt >> $GITHUB_ENV
 
       - run: fnm use --install-if-missing 18
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - run: pnpm --version
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
