@@ -26,7 +26,8 @@ jobs:
           fetch-depth: 0
 
       - run: |
-          which node
+          which node || true
+          which fnm || true
 
       - run: |
           curl -fsSL https://fnm.vercel.app/install | bash
