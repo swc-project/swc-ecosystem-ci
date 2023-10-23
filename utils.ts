@@ -465,7 +465,7 @@ export async function applyPackageOverrides(
   const pkgFile = path.join(dir, "package.json");
   await fs.promises.writeFile(pkgFile, JSON.stringify(pkg, null, 2), "utf-8");
 
-  await $`node --vesion`;
+  await $`node --version`;
 
   // use of `ni` command here could cause lockfile violation errors so fall back to native commands that avoid these
   if (pm === "pnpm") {
