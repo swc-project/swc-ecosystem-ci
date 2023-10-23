@@ -27,6 +27,7 @@ jobs:
 
       - run: |
           rm -rf /usr/local/bin/node
+          rm -rf /usr/local/bin/corepack
 
       - run: |
           curl -fsSL https://fnm.vercel.app/install | bash
@@ -38,7 +39,6 @@ jobs:
           fnm env --json | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' | xargs -I {} echo "{}" >> $GITHUB_ENV
 
       - run: |
-          export PATH="/home/runner/.local/share/fnm:$PATH"
           eval "$(fnm env --use-on-cd)"
           echo $PATH
           fnm use --install-if-missing 18
