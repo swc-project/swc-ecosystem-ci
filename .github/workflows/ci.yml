@@ -30,7 +30,7 @@ jobs:
       - id: diff
         name: List for difference of the test cases
         run: |
-          git diff ${{ github.base_ref }}...HEAD --name-only -- ./tests | sed 's/^tests\///g' | sed 's/.ts$//' > diff.txt
+          git diff ${{ github.base_ref }}...HEAD^1 --name-only -- ./tests | sed 's/^tests\///g' | sed 's/.ts$//' > diff.txt
           echo "SUITES=$(cat diff.txt)" >> $GITHUB_OUTPUT
 
       - name: Run tests
