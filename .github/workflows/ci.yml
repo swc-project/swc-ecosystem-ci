@@ -33,9 +33,9 @@ jobs:
         if: ${{ github.head_ref }}
         name: List for difference of the test cases
         run: |
-          git diff HEAD~1 --name-only -- ./tests | sed 's/^tests\///g' | sed 's/.ts$//' > diff.txt
-          cat diff.txt | sed -e 's/\n/ /g'
-          echo "SUITES=$(cat diff.txt | sed -e 's/\n/ /g')" >> $GITHUB_OUTPUT
+          git diff HEAD~1 --name-only -- ./tests | sed 's/^tests\///g' | sed 's/.ts$//' | xargs > diff.txt
+          cat diff.txt
+          echo "SUITES=$(cat diff.txt)" >> $GITHUB_OUTPUT
 
       - name: Run tests
         if: ${{ github.head_ref }}
