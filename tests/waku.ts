@@ -8,5 +8,6 @@ export async function test(options: RunOptions) {
     branch: "main",
     build: "compile",
     test: "e2e",
+    beforeTest: "pnpm exec playwright install",
   });
 }
