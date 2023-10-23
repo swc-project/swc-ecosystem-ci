@@ -251,6 +251,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
   if (nodeVerison) {
     await $`fnm use --install-if-missing ${nodeVerison}`;
     await $`node --version`;
+    await $`which node`;
   }
 
   await beforeInstallCommand?.(pkg.scripts);
