@@ -25,6 +25,7 @@ jobs:
 
       - run: |
           curl -fsSL https://fnm.vercel.app/install | bash
+          source /home/runner/.bashrc
 
       - run: corepack enable
       - run: pnpm --version
