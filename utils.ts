@@ -541,7 +541,7 @@ export async function enableIgnoredTest(testName: string) {
     await $`git branch -D enable/${testName}`;
     await $`git switch -f -c enable/${testName} HEAD`;
     await $`git stash pop`;
-    await $`git commit -m "Enable ${testName}"`;
+    await $`git commit -m Enable`;
     await $`git push origin enable/${testName} --force-with-lease`;
   } finally {
     await $`git switch main`;
