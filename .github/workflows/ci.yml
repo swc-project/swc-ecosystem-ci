@@ -32,3 +32,7 @@ jobs:
         run: |
           git diff ${{ github.base_ref }}...HEAD --name-only -- ./tests | sed 's/^tests\///g' | sed 's/.ts$//' > diff.txt
           echo "SUITES=$(cat diff.txt)" >> $GITHUB_OUTPUT
+
+      - name: Run tests
+        run: |
+          pnpm tsx ecosystem-ci.ts run-suites ${{ steps.diff.outputs.SUITES }}
