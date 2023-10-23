@@ -26,8 +26,7 @@ jobs:
           fetch-depth: 0
 
       - run: |
-          rm -rf /usr/local/bin/node
-          rm -rf /usr/local/bin/corepack
+          which node
 
       - run: |
           curl -fsSL https://fnm.vercel.app/install | bash
