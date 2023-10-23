@@ -522,3 +522,16 @@ export function getSuitesToRun(suites: string[], root: string) {
   }
   return suitesToRun;
 }
+
+export async function enableIgnoredTest(testName: string) {
+  // Remove `_` prefix, and make a branch for the PR
+
+  const origPath = path.join(root, "tests", `_${testName}.ts`);
+  const newPath = path.join(root, "tests", `${testName}.ts`);
+
+  if (!fs.existsSync(origPath)) {
+    throw new Error(`Test ${testName} does not exist`);
+  }
+
+  await fs.promises.rename(origPath, newPath);
+}

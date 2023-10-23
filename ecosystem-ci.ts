@@ -1,7 +1,12 @@
 import path from "path";
 import { cac } from "cac";
 
-import { getSuitesToRun, installSwc, setupEnvironment } from "./utils";
+import {
+  enableIgnoredTest,
+  getSuitesToRun,
+  installSwc,
+  setupEnvironment,
+} from "./utils";
 import { CommandOptions, RunOptions } from "./types";
 
 const cli = cac();
@@ -32,6 +37,12 @@ cli
     for (const suite of suitesToRun) {
       await run(suite, runOptions);
     }
+  });
+
+cli
+  .command("enable [suite]", "enable single test suite")
+  .action(async (suite) => {
+    await enableIgnoredTest(suite);
   });
 
 // cli

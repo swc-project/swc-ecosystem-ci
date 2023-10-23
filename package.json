@@ -22,6 +22,7 @@
   "scripts": {
     "prepare": "husky install",
     "test": "tsx ecosystem-ci.ts",
+    "enable": "tsx ecosystem-ci.ts enable",
     "bisect": "tsx ecosystem-ci.ts bisect"
   },
   "devDependencies": {
