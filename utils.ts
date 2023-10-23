@@ -470,10 +470,16 @@ export async function applyPackageOverrides(
   await $`node --version`;
 
   // use of `ni` command here could cause lockfile violation errors so fall back to native commands that avoid these
+
+  // About ignoring engines:
+  //
+  // GitHub Actions does not allow replacing node version using fnm, so we just ignore engines field instead.
+  //
+  // See https://github.com/swc-project/swc-ecosystem-ci/pull/14 for more details.
   if (pm === "pnpm") {
     await $`pnpm install --prefer-frozen-lockfile --prefer-offline --strict-peer-dependencies false`;
   } else if (pm === "yarn") {
-    await $`yarn install`;
+    await $`yarn install --ignore-engines`;
   } else if (pm === "npm") {
     // The transitive dependencies of the linked dependencies will not be installed by `npm i` unless `--install-links` is specified.
     // See https://github.com/npm/cli/issues/2339#issuecomment-1111228605
