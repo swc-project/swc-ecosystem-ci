@@ -211,6 +211,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
     beforeBuild,
     beforeTest,
     shallow,
+    nodeVerison,
   } = options;
 
   const dir = path.resolve(
@@ -246,6 +247,10 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
 
   const pkgFile = path.join(dir, "package.json");
   const pkg = JSON.parse(await fs.promises.readFile(pkgFile, "utf-8"));
+
+  if (nodeVerison) {
+    await $`fnm use ${nodeVerison}`;
+  }
 
   await beforeInstallCommand?.(pkg.scripts);
 
