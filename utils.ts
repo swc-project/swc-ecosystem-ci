@@ -533,14 +533,13 @@ export async function enableIgnoredTest(testName: string) {
     throw new Error(`Test ${testName} does not exist`);
   }
 
-  await fs.promises.rename(origPath, newPath);
-
   try {
-    await $`git add tests`;
-    await $`git stash`;
     await $`git branch -D enable/${testName}`;
     await $`git switch -f -c enable/${testName} HEAD`;
-    await $`git stash pop`;
+
+    await fs.promises.rename(origPath, newPath);
+
+    await $`git add -A`;
     await $`git commit -m Enable`;
     await $`git push origin enable/${testName} -f`;
   } finally {
