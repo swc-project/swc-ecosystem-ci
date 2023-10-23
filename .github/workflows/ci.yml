@@ -35,7 +35,7 @@ jobs:
           echo "/home/runner/.local/share/fnm" >> $GITHUB_PATH
           cat ./vars.txt >> $GITHUB_ENV
 
-      - run: fnm use 18
+      - run: fnm use --install-if-missing 18
       - run: pnpm --version
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline

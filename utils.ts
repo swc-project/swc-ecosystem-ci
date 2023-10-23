@@ -249,7 +249,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
   const pkg = JSON.parse(await fs.promises.readFile(pkgFile, "utf-8"));
 
   if (nodeVerison) {
-    await $`fnm use ${nodeVerison}`;
+    await $`fnm use --install-if-missing ${nodeVerison}`;
   }
 
   await beforeInstallCommand?.(pkg.scripts);
