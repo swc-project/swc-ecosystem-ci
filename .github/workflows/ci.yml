@@ -8,6 +8,12 @@ on:
     branches:
       - main
 
+env:
+  CI: 1
+  # 7 GiB by default on GitHub, setting to 6 GiB
+  # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+  NODE_OPTIONS: --max-old-space-size=6144
+
 jobs:
   ensure:
     timeout-minutes: 10
@@ -33,7 +39,8 @@ jobs:
         if: ${{ github.head_ref }}
         name: List for difference of the test cases
         run: |
-          git diff HEAD~1 --name-only -- ./tests | sed 's/^tests\///g' | sed 's/.ts$//' > diff.txt
+          git diff HEAD~1 --name-only -- ./tests | sed 's/^tests\///g' | sed 's/.ts$//' | xargs > diff.txt
+          cat diff.txt
           echo "SUITES=$(cat diff.txt)" >> $GITHUB_OUTPUT
 
       - name: Run tests

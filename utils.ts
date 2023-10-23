@@ -484,7 +484,7 @@ export async function installSwc({ version }: { version: string }) {
 }
 
 export function getSuitesToRun(suites: string[], root: string) {
-  let suitesToRun: string[] = suites;
+  let suitesToRun: string[] = suites.filter((s) => !s.startsWith("_"));
   const availableSuites: string[] = fs
     .readdirSync(path.join(root, "tests"))
     .filter((f: string) => !f.startsWith("_") && f.endsWith(".ts"))
