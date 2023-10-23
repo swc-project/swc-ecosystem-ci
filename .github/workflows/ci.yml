@@ -13,6 +13,7 @@ env:
   # 7 GiB by default on GitHub, setting to 6 GiB
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
   NODE_OPTIONS: --max-old-space-size=6144
+  FNM_COREPACK_ENABLED: true
 
 jobs:
   ensure:
@@ -34,7 +35,6 @@ jobs:
           echo "/home/runner/.local/share/fnm" >> $GITHUB_PATH
           cat ./vars.txt >> $GITHUB_ENV
 
-      - run: corepack enable
       - run: pnpm --version
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline

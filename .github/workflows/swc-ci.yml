@@ -5,6 +5,7 @@ env:
   # 7 GiB by default on GitHub, setting to 6 GiB
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
   NODE_OPTIONS: --max-old-space-size=6144
+  FNM_COREPACK_ENABLED: true
 
 on:
   workflow_dispatch:
@@ -46,7 +47,6 @@ jobs:
           deno-version: v1.x
         id: setup-deno
         continue-on-error: true
-      - run: corepack enable
       - run: pnpm --version
       - run: pnpm i --frozen-lockfile
       - run: >-
