@@ -25,6 +25,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
       - run: |
           which node || true
           node --version
