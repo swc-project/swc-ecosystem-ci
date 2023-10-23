@@ -355,6 +355,11 @@ async function overridePackageManagerVersion(
   pkg: { [key: string]: any },
   pm: string,
 ): Promise<boolean> {
+  // GitHub Actions does not allow replacing node version using fnm, so we just ignore engines field instead.
+  //
+  // See https://github.com/swc-project/swc-ecosystem-ci/pull/14 for more details.
+  delete pkg.engines;
+
   if (!pkg.packageManager && (pm === "pnpm" || pm === "yarn")) {
     const pwd = cwd;
     cd(`${root}/..`);
