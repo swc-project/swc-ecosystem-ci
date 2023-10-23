@@ -28,4 +28,4 @@ jobs:
         run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: List for difference of the test cases
-        run: git diff ${{ github.base_ref }}...${{ github.sha }} -- ./tests
+        run: git diff ${{ github.sha }}...HEAD -- ./tests
