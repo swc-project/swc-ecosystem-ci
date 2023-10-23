@@ -18,12 +18,22 @@ env:
 
 jobs:
   ensure:
-    timeout-minutes: 10
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: |
+          which node || true
+          node --version
+          which nvm || true
+          which fnm || true
 
       - run: |
           curl -fsSL https://fnm.vercel.app/install | bash
@@ -64,6 +74,7 @@ jobs:
         run: |
           export PATH="/home/runner/.local/share/fnm:$PATH"
           eval "$(fnm env --use-on-cd)"
+          bash -r
           echo $PATH
           which node
           pnpm tsx ecosystem-ci.ts run-suites ${{ steps.diff.outputs.SUITES }}
