@@ -36,11 +36,9 @@ jobs:
 
       - run: |
           export PATH="/home/runner/.local/share/fnm:$PATH"
-          fnm env | sed 's/rehash//' | sed -e 's/export //' > ./vars.txt
-          cat ./vars.txt
-
           echo "/home/runner/.local/share/fnm" >> $GITHUB_PATH
-          cat ./vars.txt >> $GITHUB_ENV
+
+          fnm env --json | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' | xargs echo >> $GITHUB_ENV
 
       - run: fnm use --install-if-missing 18
 
