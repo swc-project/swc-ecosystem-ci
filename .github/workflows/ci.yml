@@ -29,6 +29,9 @@ jobs:
           curl -fsSL https://fnm.vercel.app/install | bash
 
       - run: |
+          rm /usr/local/bin/node
+
+      - run: |
           export PATH="/home/runner/.local/share/fnm:$PATH"
           echo "/home/runner/.local/share/fnm" >> $GITHUB_PATH
 
