@@ -479,7 +479,7 @@ export async function applyPackageOverrides(
   if (pm === "pnpm") {
     await $`pnpm install --prefer-frozen-lockfile --prefer-offline --strict-peer-dependencies false`;
   } else if (pm === "yarn") {
-    await $`yarn install --ignore-engines`;
+    await $`yarn install`;
   } else if (pm === "npm") {
     // The transitive dependencies of the linked dependencies will not be installed by `npm i` unless `--install-links` is specified.
     // See https://github.com/npm/cli/issues/2339#issuecomment-1111228605
