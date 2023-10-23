@@ -255,6 +255,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
       ...env,
       ...envJson,
     };
+    console.log(env);
 
     await $`node --version`;
   }
