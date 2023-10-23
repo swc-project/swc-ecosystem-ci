@@ -37,7 +37,7 @@ jobs:
       - run: |
           eval "$(fnm env)"
           echo $PATH
-          fnm use --install-if-missing 16
+          fnm use --install-if-missing 18
           which node
 
       - uses: pnpm/action-setup@v2
