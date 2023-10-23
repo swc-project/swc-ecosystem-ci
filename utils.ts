@@ -534,4 +534,11 @@ export async function enableIgnoredTest(testName: string) {
   }
 
   await fs.promises.rename(origPath, newPath);
+
+  try {
+    await $`git branch -D enable/${testName}`;
+    await $`git switch -f -c enable/${testName} HEAD`;
+  } finally {
+    await $`git switch main`;
+  }
 }
