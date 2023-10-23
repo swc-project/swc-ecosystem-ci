@@ -48,7 +48,7 @@ cli
 
       const availableSuites: string[] = fs
         .readdirSync(path.join(root, "tests"))
-        .filter((f: string) => f.endsWith(".ts"))
+        .filter((f: string) => f.startsWith("_") && f.endsWith(".ts"))
         .map((f: string) => f.slice(1, -3));
       availableSuites.sort();
       for (const suite of availableSuites) {
