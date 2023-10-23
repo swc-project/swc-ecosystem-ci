@@ -46,7 +46,9 @@ jobs:
 
       - run: pnpm --version
       - name: install
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: |
+          eval "$(fnm env)"
+          pnpm install --frozen-lockfile --prefer-offline
 
       - id: diff
         if: ${{ github.head_ref }}
@@ -61,4 +63,5 @@ jobs:
         run: |
           eval "$(fnm env)"
           echo $PATH
+          which node
           pnpm tsx ecosystem-ci.ts run-suites ${{ steps.diff.outputs.SUITES }}
