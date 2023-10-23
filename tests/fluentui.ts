@@ -9,5 +9,6 @@ export async function test(options: RunOptions) {
     build: "build",
     test: ["test"],
     agent: "yarn@berry",
+    nodeVerison: "16",
   });
 }
