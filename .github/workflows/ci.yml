@@ -35,7 +35,7 @@ jobs:
           fnm env --json | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' | xargs -I {} echo "{}" >> $GITHUB_ENV
 
       - run: |
-          eval "$(fnm env)"
+          eval "$(fnm env --use-on-cd)"
           echo $PATH
           fnm use --install-if-missing 18
           which node
@@ -47,7 +47,7 @@ jobs:
       - run: pnpm --version
       - name: install
         run: |
-          eval "$(fnm env)"
+          eval "$(fnm env --use-on-cd)"
           pnpm install --frozen-lockfile --prefer-offline
 
       - id: diff
@@ -61,7 +61,7 @@ jobs:
       - name: Run tests
         if: ${{ github.head_ref }}
         run: |
-          eval "$(fnm env)"
+          eval "$(fnm env --use-on-cd)"
           echo $PATH
           which node
           pnpm tsx ecosystem-ci.ts run-suites ${{ steps.diff.outputs.SUITES }}

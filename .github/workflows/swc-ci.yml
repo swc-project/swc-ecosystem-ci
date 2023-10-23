@@ -42,7 +42,7 @@ jobs:
           fnm env --json | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' | xargs -I {} echo "{}" >> $GITHUB_ENV
 
       - run: |
-          eval "$(fnm env)"
+          eval "$(fnm env --use-on-cd)"
           echo $PATH
           fnm use --install-if-missing 18
           which node
@@ -54,7 +54,7 @@ jobs:
       - run: pnpm --version
       - run: pnpm i --frozen-lockfile
       - run: |
-          eval "$(fnm env)"
+          eval "$(fnm env --use-on-cd)"
           echo $PATH
           pnpm tsx ecosystem-ci.ts run-suites ${{ inputs.suite }} --release ${{ inputs.version }}
 
