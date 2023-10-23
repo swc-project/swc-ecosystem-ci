@@ -74,7 +74,7 @@ jobs:
         run: |
           export PATH="/home/runner/.local/share/fnm:$PATH"
           eval "$(fnm env --use-on-cd)"
-          rehash
+          bash -r
           echo $PATH
           which node
           which nodejs
