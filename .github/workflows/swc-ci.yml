@@ -44,7 +44,7 @@ jobs:
 
       - run: fnm use --install-if-missing 18
 
-      - run: curl -fsSL https://get.pnpm.io/install.sh | sh -
+      - run: wget -qO- https://get.pnpm.io/install.sh | bash -
 
       - run: pnpm --version
       - run: pnpm i --frozen-lockfile
