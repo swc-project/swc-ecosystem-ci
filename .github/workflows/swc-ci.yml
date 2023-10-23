@@ -6,6 +6,7 @@ env:
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
   NODE_OPTIONS: --max-old-space-size=6144
   FNM_COREPACK_ENABLED: true
+  FNM_RESOLVE_ENGINES: true
 
 on:
   workflow_dispatch:
