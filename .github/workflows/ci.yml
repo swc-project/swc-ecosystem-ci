@@ -26,7 +26,7 @@ jobs:
       - run: |
           curl -fsSL https://fnm.vercel.app/install | bash
           echo "/home/runner/.local/share/fnm" >> $GITHUB_PATH
-          eval "`fnm env | sed 's/rehash//' | sed -e 's/export //'`" >> $GITHUB_ENV
+          eval "`fnm env | sed 's/rehash//' | sed -e 's/export //'`" | tee /dev/stderr >> $GITHUB_ENV
 
       - run: corepack enable
       - run: pnpm --version
