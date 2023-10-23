@@ -21,6 +21,10 @@ export interface RunOptions {
   beforeInstall?: Task | Task[];
   beforeBuild?: Task | Task[];
   beforeTest?: Task | Task[];
+  /**
+   * Passed to fnm
+   */
+  nodeVerison?: string;
 }
 
 type Task = string | { script: string; args?: string[] } | (() => Promise<any>);

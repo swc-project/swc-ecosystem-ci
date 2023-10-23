@@ -5,6 +5,8 @@ env:
   # 7 GiB by default on GitHub, setting to 6 GiB
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
   NODE_OPTIONS: --max-old-space-size=6144
+  FNM_COREPACK_ENABLED: true
+  FNM_RESOLVE_ENGINES: true
 
 on:
   workflow_dispatch:
@@ -29,21 +31,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+
+      - run: |
+          curl -fsSL https://fnm.vercel.app/install | bash
+
+      - run: |
+          export PATH="/home/runner/.local/share/fnm:$PATH"
+          echo "/home/runner/.local/share/fnm" >> $GITHUB_PATH
+
+          fnm env --json | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' | xargs -I {} echo "{}" >> $GITHUB_ENV
+
+      - run: |
+          export PATH="/home/runner/.local/share/fnm:$PATH"
+          eval "$(fnm env --use-on-cd)"
+          echo $PATH
+          fnm use --install-if-missing 18
+          which node
+
+      - uses: pnpm/action-setup@v2
         with:
-          node-version: 18
-        id: setup-node
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
-        id: setup-deno
-        continue-on-error: true
-      - run: corepack enable
+          version: 8
+
       - run: pnpm --version
       - run: pnpm i --frozen-lockfile
-      - run: >-
-          pnpm tsx ecosystem-ci.ts run-suites ${{ inputs.suite }}
-          --release ${{ inputs.version }}
+      - run: |
+          export PATH="/home/runner/.local/share/fnm:$PATH"
+          eval "$(fnm env --use-on-cd)"
+          echo $PATH
+          pnpm tsx ecosystem-ci.ts run-suites ${{ inputs.suite }} --release ${{ inputs.version }}
+
         id: ecosystem-ci-run
 
       - if: always()

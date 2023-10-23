@@ -211,6 +211,7 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
     beforeBuild,
     beforeTest,
     shallow,
+    nodeVerison,
   } = options;
 
   const dir = path.resolve(
@@ -246,6 +247,12 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
 
   const pkgFile = path.join(dir, "package.json");
   const pkg = JSON.parse(await fs.promises.readFile(pkgFile, "utf-8"));
+
+  if (nodeVerison) {
+    await $`fnm use --install-if-missing ${nodeVerison}`;
+    await $`node --version`;
+    await $`which node`;
+  }
 
   await beforeInstallCommand?.(pkg.scripts);
 
@@ -459,6 +466,8 @@ export async function applyPackageOverrides(
   }
   const pkgFile = path.join(dir, "package.json");
   await fs.promises.writeFile(pkgFile, JSON.stringify(pkg, null, 2), "utf-8");
+
+  await $`node --version`;
 
   // use of `ni` command here could cause lockfile violation errors so fall back to native commands that avoid these
   if (pm === "pnpm") {
