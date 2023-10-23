@@ -76,4 +76,5 @@ jobs:
           eval "$(fnm env --use-on-cd)"
           echo $PATH
           which node
+          which nodejs
           pnpm tsx ecosystem-ci.ts run-suites ${{ steps.diff.outputs.SUITES }}
