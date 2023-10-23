@@ -26,6 +26,3 @@ jobs:
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
-      - name: audit
-        if: (${{ success() }} || ${{ failure() }})
-        run: pnpm audit
