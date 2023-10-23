@@ -44,9 +44,7 @@ jobs:
 
       - run: fnm use --install-if-missing 18
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+      - run: curl -fsSL https://get.pnpm.io/install.sh | sh -
 
       - run: pnpm --version
       - run: pnpm i --frozen-lockfile
