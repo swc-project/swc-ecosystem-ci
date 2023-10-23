@@ -250,6 +250,12 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
 
   if (nodeVerison) {
     await $`fnm use --install-if-missing ${nodeVerison}`;
+    const envJson = JSON.parse(await $`fnm env --json`);
+    env = {
+      ...env,
+      ...envJson,
+    };
+
     await $`node --version`;
   }
 
