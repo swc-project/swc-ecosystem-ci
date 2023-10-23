@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -26,6 +28,15 @@ jobs:
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
-      - name: audit
-        if: (${{ success() }} || ${{ failure() }})
-        run: pnpm audit
+
+      - id: diff
+        if: ${{ github.head_ref }}
+        name: List for difference of the test cases
+        run: |
+          git diff HEAD~1 --name-only -- ./tests | sed 's/^tests\///g' | sed 's/.ts$//' > diff.txt
+          echo "SUITES=$(cat diff.txt)" >> $GITHUB_OUTPUT
+
+      - name: Run tests
+        if: ${{ github.head_ref }}
+        run: |
+          pnpm tsx ecosystem-ci.ts run-suites ${{ steps.diff.outputs.SUITES }}
