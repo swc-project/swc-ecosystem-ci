@@ -35,8 +35,8 @@ jobs:
           fnm env --json | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' | xargs -I {} echo "{}" >> $GITHUB_ENV
 
       - run: |
-          echo $PATH
           eval "$(fnm env)"
+          echo $PATH
           fnm use --install-if-missing 16
           which node
 
@@ -60,4 +60,5 @@ jobs:
         if: ${{ github.head_ref }}
         run: |
           eval "$(fnm env)"
+          echo $PATH
           pnpm tsx ecosystem-ci.ts run-suites ${{ steps.diff.outputs.SUITES }}
