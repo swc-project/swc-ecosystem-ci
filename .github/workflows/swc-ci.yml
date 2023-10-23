@@ -43,7 +43,7 @@ jobs:
 
       - run: |
           echo $PATH
-          eval "$(fnm env)"
+          eval "$(fnm env --multi)"
           fnm use --install-if-missing 18
           which node
 
@@ -54,7 +54,7 @@ jobs:
       - run: pnpm --version
       - run: pnpm i --frozen-lockfile
       - run: |
-          eval "$(fnm env)"
+          eval "$(fnm env --multi)"
           pnpm tsx ecosystem-ci.ts run-suites ${{ inputs.suite }} --release ${{ inputs.version }}
 
         id: ecosystem-ci-run
