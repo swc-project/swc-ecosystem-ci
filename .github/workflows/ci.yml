@@ -30,12 +30,6 @@ jobs:
           node-version: 18
 
       - run: |
-          which node || true
-          node --version
-          which nvm || true
-          which fnm || true
-
-      - run: |
           curl -fsSL https://fnm.vercel.app/install | bash
 
       - run: |

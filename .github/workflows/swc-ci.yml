@@ -32,8 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          rm -rf /usr/local/bin/node
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
       - run: |
           curl -fsSL https://fnm.vercel.app/install | bash
@@ -60,7 +61,10 @@ jobs:
       - run: |
           export PATH="/home/runner/.local/share/fnm:$PATH"
           eval "$(fnm env --use-on-cd)"
+          bash -r
           echo $PATH
+          which node
+
           pnpm tsx ecosystem-ci.ts run-suites ${{ inputs.suite }} --release ${{ inputs.version }}
 
         id: ecosystem-ci-run
