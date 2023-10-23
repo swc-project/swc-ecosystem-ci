@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 import { cac } from "cac";
 
@@ -42,6 +43,19 @@ cli
 cli
   .command("enable [suite]", "enable single test suite")
   .action(async (suite) => {
+    if (suite === "_") {
+      const { root } = await setupEnvironment();
+
+      const availableSuites: string[] = fs
+        .readdirSync(path.join(root, "tests"))
+        .filter((f: string) => f.endsWith(".ts"))
+        .map((f: string) => f.slice(1, -3));
+      availableSuites.sort();
+      for (const suite of availableSuites) {
+        await enableIgnoredTest(suite);
+      }
+      return;
+    }
     await enableIgnoredTest(suite);
   });
 
