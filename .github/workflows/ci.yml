@@ -32,7 +32,7 @@ jobs:
           cat ./vars.txt
 
           echo "/home/runner/.local/share/fnm" >> $GITHUB_PATH
-          eval "$(cat ./vars.txt)" >> $GITHUB_ENV
+          cat ./vars.txt >> $GITHUB_ENV
 
       - run: corepack enable
       - run: pnpm --version
