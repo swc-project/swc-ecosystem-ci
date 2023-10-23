@@ -26,10 +26,10 @@ jobs:
           fetch-depth: 0
 
       - run: |
-          curl -fsSL https://fnm.vercel.app/install | bash
+          rm -rf /usr/local/bin/node
 
       - run: |
-          rm /usr/local/bin/node
+          curl -fsSL https://fnm.vercel.app/install | bash
 
       - run: |
           export PATH="/home/runner/.local/share/fnm:$PATH"
