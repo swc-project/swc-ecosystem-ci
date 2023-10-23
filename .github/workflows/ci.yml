@@ -37,7 +37,9 @@ jobs:
 
       - run: fnm use --install-if-missing 18
 
-      - run: curl -fsSL https://get.pnpm.io/install.sh | sh -
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - run: pnpm --version
       - name: install
