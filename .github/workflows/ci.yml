@@ -27,6 +27,7 @@ jobs:
 
       - run: |
           which node || true
+          node --version
           which nvm || true
           which fnm || true
 
