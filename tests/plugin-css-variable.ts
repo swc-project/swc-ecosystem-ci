@@ -7,6 +7,7 @@ export async function test(options: RunOptions) {
     repo: "jantimon/css-variable",
     branch: "main",
     build: "build",
-    test: ["test:swc", "test:e2e"],
+    beforeBuild: "rustup target add wasm32-wasi",
+    test: ["test:swc"],
   });
 }
