@@ -112,7 +112,7 @@ jobs:
           commit-message: "Update ${{ inputs.suite }}: ${{ job.status }}"
 
       - if: failure() && ${{ github.event.inputs.mode == 'passing' }}
-        name: Discord Webhook Action
+        name: Notify failure
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -121,7 +121,7 @@ jobs:
             See https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }} for details.
 
       - if: success() && ${{ github.event.inputs.mode == 'ignored' }}
-        name: Discord Webhook Action
+        name: Notify success
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
