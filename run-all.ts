@@ -17,6 +17,8 @@ async function runAll() {
       ref: "main",
       inputs: {
         suite: testSuite,
+        mode: process.env.CI_MODE!,
+        version: process.env.SWC_VERSION!,
       },
     });
   }

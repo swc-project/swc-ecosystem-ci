@@ -18,6 +18,13 @@ on:
         type: string
         default: "nightly"
 
+      mode:
+        type: choice
+        description: "Passing is a regular proces, and ignored is about ignored tests"
+        options:
+          - "passing"
+          - "ignored"
+
 jobs:
   run-all:
     timeout-minutes: 30
@@ -34,5 +41,6 @@ jobs:
       - run: pnpm i --frozen-lockfile
       - run: pnpm tsx run-all.ts
         env:
-          SWC_RELEASE: ${{ github.event.inputs.version || 'nightly' }}
+          SWC_VERSION: ${{ github.event.inputs.version || 'nightly' }}
+          CI_MODE: ${{ github.event.inputs.mode || 'passing' }}
           BOT_GH_TOKEN: ${{ secrets.BOT_GH_TOKEN }}

@@ -498,11 +498,13 @@ export async function installSwc({ version }: { version: string }) {
   await $`npm install @swc/core@${version} @swc/jest @swc/types ts-node@11.0.0-beta.1 --no-save --force`;
 }
 
+const isWorkingWithIgnoredTess = process.env.CI_MODE === "ignored";
+
 export function getSuitesToRun(suites: string[], root: string) {
   let suitesToRun: string[] = suites.filter((s) => !s.startsWith("_"));
   const availableSuites: string[] = fs
-    .readdirSync(path.join(root, "tests"))
-    .filter((f: string) => !f.startsWith("_") && f.endsWith(".ts"))
+    .readdirSync(path.join(root, isWorkingWithIgnoredTess ? "todos" : "tests"))
+    .filter((f: string) => f.endsWith(".ts"))
     .map((f: string) => f.slice(0, -3));
   availableSuites.sort();
   if (
@@ -512,7 +514,7 @@ export function getSuitesToRun(suites: string[], root: string) {
     suitesToRun = availableSuites;
   } else {
     const invalidSuites = suitesToRun.filter(
-      (x) => !x.startsWith("_") && !availableSuites.includes(x),
+      (x) => !availableSuites.includes(x),
     );
     if (invalidSuites.length) {
       console.log(`invalid suite(s): ${invalidSuites.join(", ")}`);
