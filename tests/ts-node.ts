@@ -7,6 +7,6 @@ export async function test(options: RunOptions) {
     repo: "TypeStrong/ts-node",
     branch: "main",
     build: "build",
-    test: "test",
+    test: "test ^ci-node-and-ts-versions",
   });
 }
