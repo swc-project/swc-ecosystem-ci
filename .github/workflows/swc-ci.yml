@@ -80,25 +80,25 @@ jobs:
 
         id: ecosystem-ci-run
 
-      - if: always() && ${{ github.event.inputs.mode }} == "passing"
+      - if: always() && ${{ github.event.inputs.mode == 'passing' }}
         name: Download previous result
         uses: actions/checkout@v4
         with:
           repository: swc-project/raw-green-data
           path: "green-data"
 
-      - if: (success() || failure()) && ${{ github.event.inputs.mode }} == "passing"
+      - if: (success() || failure()) && ${{ github.event.inputs.mode == 'passing' }}
         name: "Last"
         run: |
           mkdir -p green-data/${{ inputs.suite }}
           echo "${{ job.status }}" > green-data/${{ inputs.suite }}/last.txt
 
-      - if: success() && ${{ github.event.inputs.mode }} == "passing"
+      - if: success() && ${{ github.event.inputs.mode == 'passing' }}
         name: "Mark last success"
         run: |
           echo "https://github.com/swc-project/swc-ecosystem-ci/actions/runs/${{ github.run_id }}" > green-data/${{ inputs.suite }}/last-success.txt
 
-      - if: (success() || failure()) && ${{ github.event.inputs.mode }} == "passing"
+      - if: (success() || failure()) && ${{ github.event.inputs.mode == 'passing' }}
         name: Upload result
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
@@ -107,11 +107,11 @@ jobs:
           folder: green-data
           clean: false
           single-commit: false
-          git-config-email: github-bot@swc.rs
+          git-config-email: bot@swc.rs
           repository-name: swc-project/raw-green-data
           commit-message: "Update ${{ inputs.suite }}: ${{ job.status }}"
 
-      - if: (failure()) && ${{ github.event.inputs.mode }} == "passing"
+      - if: failure() && ${{ github.event.inputs.mode == 'passing' }}
         name: Discord Webhook Action
         uses: tsickert/discord-webhook@v5.3.0
         with:
