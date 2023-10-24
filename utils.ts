@@ -526,7 +526,7 @@ export function getSuitesToRun(suites: string[], root: string) {
 export async function enableIgnoredTest(testName: string) {
   // Remove `_` prefix, and make a branch for the PR
 
-  const origPath = path.join(root, "tests", `_${testName}.ts`);
+  const origPath = path.join(root, "todos", `${testName}.ts`);
   const newPath = path.join(root, "tests", `${testName}.ts`);
 
   if (!fs.existsSync(origPath)) {
@@ -542,7 +542,7 @@ export async function enableIgnoredTest(testName: string) {
     await fs.promises.rename(origPath, newPath);
 
     await $`git add -A`;
-    await $`git commit -m Enable`;
+    await $`git commit -m ${testName}`;
     await $`git push origin enable/${testName} -f`;
   } finally {
     await $`git switch main`;
