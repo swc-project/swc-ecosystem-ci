@@ -7,6 +7,7 @@ import {
   getSuitesToRun,
   installSwc,
   setupEnvironment,
+  testDir,
 } from "./utils";
 import { CommandOptions, RunOptions } from "./types";
 
@@ -113,7 +114,7 @@ cli.help();
 cli.parse();
 
 async function run(suite: string, options: RunOptions) {
-  const { test } = await import(`./tests/${suite}.ts`);
+  const { test } = await import(`./${testDir}/${suite}.ts`);
   await test({
     ...options,
     workspace: path.resolve(options.workspace, suite),

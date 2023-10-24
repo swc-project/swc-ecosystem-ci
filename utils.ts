@@ -498,12 +498,13 @@ export async function installSwc({ version }: { version: string }) {
   await $`npm install @swc/core@${version} @swc/jest @swc/types ts-node@11.0.0-beta.1 --no-save --force`;
 }
 
-const isWorkingWithIgnoredTess = process.env.CI_MODE === "ignored";
+export const isWorkingWithIgnoredTess = process.env.CI_MODE === "ignored";
+export const testDir = isWorkingWithIgnoredTess ? "todos" : "tests";
 
 export function getSuitesToRun(suites: string[], root: string) {
   let suitesToRun: string[] = suites.filter((s) => !s.startsWith("_"));
   const availableSuites: string[] = fs
-    .readdirSync(path.join(root, isWorkingWithIgnoredTess ? "todos" : "tests"))
+    .readdirSync(path.join(root, testDir))
     .filter((f: string) => f.endsWith(".ts"))
     .map((f: string) => f.slice(0, -3));
   availableSuites.sort();
