@@ -7,6 +7,6 @@ export async function test(options: RunOptions) {
     repo: "jprichardson/node-fs-extra",
     branch: "master",
     build: [],
-    test: ["unit", "unit:esm"],
+    test: ["unit", "unit-esm"],
   });
 }
