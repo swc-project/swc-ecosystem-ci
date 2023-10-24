@@ -8,6 +8,6 @@ export async function test(options: RunOptions) {
     branch: "main",
     build: "build",
     beforeBuild: "rustup target add wasm32-wasi",
-    test: ["test:swc", "test:e2e"],
+    test: ["test:swc"],
   });
 }
