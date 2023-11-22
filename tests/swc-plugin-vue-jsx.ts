@@ -6,7 +6,7 @@ export async function test(options: RunOptions) {
     ...options,
     repo: "g-plane/swc-plugin-vue-jsx",
     branch: "main",
-    build: "build",
+    build: ["rustup target add wasm32-unknown-unknown", "build"],
     test: ["test"],
   });
 }
