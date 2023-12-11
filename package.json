@@ -21,7 +21,7 @@
   "author": "",
   "scripts": {
     "prepare": "husky install",
-    "test": "tsx ecosystem-ci.ts",
+    "test": "tsx ecosystem-ci.ts run-suites",
     "enable": "tsx ecosystem-ci.ts enable",
     "bisect": "tsx ecosystem-ci.ts bisect"
   },
