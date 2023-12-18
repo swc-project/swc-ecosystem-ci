@@ -104,6 +104,7 @@ jobs:
       - if: ${{ (success() || failure()) && github.event.inputs.mode == 'passing' }}
         name: Upload result
         uses: JamesIves/github-pages-deploy-action@4.1.0
+        continue-on-error: true
         with:
           token: ${{ secrets.BOT_GH_TOKEN }}
           branch: main
