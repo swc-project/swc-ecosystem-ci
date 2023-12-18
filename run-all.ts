@@ -9,19 +9,17 @@ async function runAll() {
 
   console.log(await octokit.rest.users.getAuthenticated());
 
-  for (const testSuite of suitesToRun) {
-    await octokit.rest.actions.createWorkflowDispatch({
-      owner: "swc-project",
-      repo: "swc-ecosystem-ci",
-      workflow_id: "72388640",
-      ref: "main",
-      inputs: {
-        suite: testSuite,
-        mode: process.env.CI_MODE!,
-        version: process.env.SWC_VERSION!,
-      },
-    });
-  }
+  await octokit.rest.actions.createWorkflowDispatch({
+    owner: "swc-project",
+    repo: "swc-ecosystem-ci",
+    workflow_id: "72388640",
+    ref: "main",
+    inputs: {
+      suites: JSON.stringify(suitesToRun),
+      mode: process.env.CI_MODE!,
+      version: process.env.SWC_VERSION!,
+    },
+  });
 }
 
 runAll();
