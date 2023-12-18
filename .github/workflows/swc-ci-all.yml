@@ -20,7 +20,7 @@ on:
 
       mode:
         type: choice
-        description: "Passing is a regular proces, and ignored is about ignored tests"
+        description: "Passing is a regular procces, and ignored is about ignored tests"
         options:
           - "passing"
           - "ignored"
