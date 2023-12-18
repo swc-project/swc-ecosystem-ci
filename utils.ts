@@ -265,6 +265,8 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
     await testCommand?.(pkg.scripts);
   }
   const overrides = options.overrides || {};
+  // https://github.com/facebook/react-native/issues/35701#issuecomment-1697798232
+  overrides["jest"] = path.join(swcPath, "node_modules", "jest");
   overrides["ts-node"] = path.join(swcPath, "node_modules", "ts-node");
   overrides["@swc/core"] = path.join(swcPath, "node_modules", "@swc", "core");
   overrides["@swc/types"] = path.join(swcPath, "node_modules", "@swc", "types");
@@ -495,7 +497,7 @@ export async function installSwc({ version }: { version: string }) {
   await fs.promises.mkdir(swcPath, { recursive: true });
   await fs.promises.writeFile(path.join(swcPath, "package.json"), "{}", "utf8");
   cd(swcPath);
-  await $`npm install @swc/core@${version} @swc/jest @swc/types ts-node@11.0.0-beta.1 --no-save --force`;
+  await $`npm install @swc/core@${version} @swc/jest @swc/types ts-node@11.0.0-beta.1 jest@29.6.4 --no-save --force`;
 }
 
 export const isWorkingWithIgnoredTess = process.env.CI_MODE === "ignored";
