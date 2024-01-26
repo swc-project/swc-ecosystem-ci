@@ -8,7 +8,7 @@ export async function test(options: RunOptions) {
     repo: "mswjs/msw",
     branch: "main",
     build: "build",
-    beforeTest: ["pnpm exec playwright install"],
+    beforeTest: "pnpm exec playwright install",
     test: ["test:unit", "test:node", "test:browser"],
   });
 }
