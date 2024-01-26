@@ -7,6 +7,8 @@ env:
   NODE_OPTIONS: --max-old-space-size=6144
   FNM_COREPACK_ENABLED: true
   FNM_RESOLVE_ENGINES: true
+  # https://github.com/actions/setup-node/issues/899#issuecomment-1819151595
+  SKIP_YARN_COREPACK_CHECK: 1
 
 on:
   workflow_dispatch:
